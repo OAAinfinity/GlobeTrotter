@@ -8,7 +8,9 @@ import { DashboardPage } from './pages/DashboardPage';
 import { MyTripsPage } from './pages/MyTripsPage';
 import { CreateTripPage } from './pages/CreateTripPage';
 import { TripDetailPage } from './pages/TripDetailPage';
+import { SharedTripPage } from './pages/SharedTripPage';
 import { DiscoverPage } from './pages/DiscoverPage';
+import { ActivitySearchPage } from './pages/ActivitySearchPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { CheckCircle2, AlertCircle, Info } from 'lucide-react';
 
@@ -55,7 +57,10 @@ const MainLayout = () => {
           <Route path="/trips" element={<MyTripsPage />} />
           <Route path="/trips/new" element={<CreateTripPage />} />
           <Route path="/trips/:tripId" element={<TripDetailPage />} />
+          <Route path="/trips/:tripId/shared" element={<SharedTripPage />} />
+          <Route path="/public/trips/:tripId" element={<SharedTripPage />} />
           <Route path="/discover" element={<DiscoverPage />} />
+          <Route path="/activities" element={<ActivitySearchPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>

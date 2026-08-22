@@ -7,8 +7,12 @@ import { Badge } from '../components/common/Badge';
 import { Tabs } from '../components/common/Tabs';
 import { Modal } from '../components/common/Modal';
 import { DayItineraryCard } from '../components/trips/DayItineraryCard';
+import { ExpandableStopCard } from '../components/trips/ExpandableStopCard';
+import { TripItineraryView } from '../components/trips/TripItineraryView';
+import { TripBudgetBreakdownView } from '../components/trips/TripBudgetBreakdownView';
+import { TripCalendarTimelineView } from '../components/trips/TripCalendarTimelineView';
+import { AddEditStopModal } from '../components/trips/AddEditStopModal';
 import { AddActivityModal } from '../components/trips/AddActivityModal';
-import { BudgetAnalytics } from '../components/trips/BudgetAnalytics';
 import { TransportLegPlanner } from '../components/trips/TransportLegPlanner';
 import { PackingChecklistModal } from '../components/trips/PackingChecklistModal';
 import { ShareTripModal } from '../components/trips/ShareTripModal';
@@ -22,10 +26,14 @@ import {
   Trash2,
   Sparkles,
   CheckCircle2,
-  Clock,
+  Plus,
   Briefcase,
   Train,
-  CheckSquare
+  CheckSquare,
+  Layers,
+  Eye,
+  PieChart as PieIcon,
+  CalendarDays
 } from 'lucide-react';
 
 export const TripDetailPage = () => {
@@ -33,12 +41,19 @@ export const TripDetailPage = () => {
   const navigate = useNavigate();
   const { trips, cities, activities, updateTrip, deleteTrip } = useApp();
 
-  const [activeTab, setActiveTab] = useState('itinerary'); // 'itinerary', 'transport', 'budget', 'cities'
+  const [activeTab, setActiveTab] = useState('stops'); // 'stops', 'calendar', 'view', 'itinerary', 'transport', 'budget'
   const [selectedDayForModal, setSelectedDayForModal] = useState(null);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isAddActivityModalOpen, setIsAddActivityModalOpen] = useState(false);
+  const [isStopModalOpen, setIsStopModalOpen] = useState(false);
+  const [editingStop, setEditingStop] = useState(null);
+  const [editingStopIndex, setEditingStopIndex] = useState(null);
+
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isPackingModalOpen, setIsPackingModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  // Drag-and-drop state for stops
+  const [draggedStopIndex, setDraggedStopIndex] = useState(null);
 
   const trip = trips.find((t) => t.id === tripId);
 
@@ -61,6 +76,8 @@ export const TripDetailPage = () => {
     );
   }
 
+  const tripStops = trip.cities || [];
+
   // Calculate total days
   const calculateTotalDays = () => {
     if (!trip.startDate || !trip.endDate) return 7;
@@ -73,14 +90,15 @@ export const TripDetailPage = () => {
 
   const totalDays = calculateTotalDays();
 
-  // Create list of days mapped to city legs
+  // Create list of days mapped to city legs for daily itinerary view
   const daysList = [];
   let currentDayNum = 1;
 
-  (trip.cities || []).forEach((leg) => {
-    const city = cities.find((c) => c.id === leg.cityId);
+  tripStops.forEach((leg) => {
+    const city = cities.find((c) => c.id === leg.cityId || c.name === leg.cityName);
     const cityName = city ? city.name : leg.cityName || 'Destination';
-    for (let d = 1; d <= leg.days; d++) {
+    const legDays = leg.days || 3;
+    for (let d = 1; d <= legDays; d++) {
       daysList.push({
         dayNumber: currentDayNum,
         cityId: leg.cityId,
@@ -91,7 +109,6 @@ export const TripDetailPage = () => {
     }
   });
 
-  // If daysList is empty fallback to generic days
   if (daysList.length === 0) {
     for (let d = 1; d <= totalDays; d++) {
       daysList.push({
@@ -103,12 +120,93 @@ export const TripDetailPage = () => {
     }
   }
 
-  // Add custom activity to trip
+  // SAVE STOP (Add or Edit)
+  const handleSaveStop = (stopData, indexToEdit) => {
+    let updatedStops = [...tripStops];
+
+    if (indexToEdit !== null && indexToEdit !== undefined) {
+      updatedStops[indexToEdit] = {
+        ...updatedStops[indexToEdit],
+        ...stopData
+      };
+    } else {
+      updatedStops.push(stopData);
+    }
+
+    const newSelectedActs = Array.from(
+      new Set(updatedStops.flatMap((s) => s.assignedActivities || []))
+    );
+
+    updateTrip(trip.id, {
+      cities: updatedStops,
+      selectedActivities: newSelectedActs
+    });
+  };
+
+  // REMOVE STOP
+  const handleRemoveStop = (indexToRemove) => {
+    const updatedStops = tripStops.filter((_, idx) => idx !== indexToRemove);
+    const newSelectedActs = Array.from(
+      new Set(updatedStops.flatMap((s) => s.assignedActivities || []))
+    );
+
+    updateTrip(trip.id, {
+      cities: updatedStops,
+      selectedActivities: newSelectedActs
+    });
+  };
+
+  // MOVE STOP (Up / Down)
+  const handleMoveStop = (index, direction) => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= tripStops.length) return;
+    const updatedStops = [...tripStops];
+    const temp = updatedStops[index];
+    updatedStops[index] = updatedStops[targetIndex];
+    updatedStops[targetIndex] = temp;
+
+    updateTrip(trip.id, { cities: updatedStops });
+  };
+
+  // Drag and Drop
+  const handleDragStart = (e, index) => {
+    setDraggedStopIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e, dropIndex) => {
+    e.preventDefault();
+    if (draggedStopIndex === null || draggedStopIndex === dropIndex) return;
+
+    const updatedStops = [...tripStops];
+    const draggedItem = updatedStops[draggedStopIndex];
+    updatedStops.splice(draggedStopIndex, 1);
+    updatedStops.splice(dropIndex, 0, draggedItem);
+
+    setDraggedStopIndex(null);
+    updateTrip(trip.id, { cities: updatedStops });
+  };
+
+  const handleOpenEditStop = (stop, index) => {
+    setEditingStop(stop);
+    setEditingStopIndex(index);
+    setIsStopModalOpen(true);
+  };
+
+  const handleOpenAddStop = () => {
+    setEditingStop(null);
+    setEditingStopIndex(null);
+    setIsStopModalOpen(true);
+  };
+
   const handleAddActivity = (newAct, dayNum) => {
     const actWithDay = { ...newAct, dayNumber: dayNum };
     const updatedSelectedIds = [...(trip.selectedActivities || []), newAct.id];
-
-    // Store custom activities in customActivities array on trip
     const updatedCustoms = [...(trip.customActivities || []), actWithDay];
 
     updateTrip(trip.id, {
@@ -117,7 +215,6 @@ export const TripDetailPage = () => {
     });
   };
 
-  // Remove activity from trip
   const handleRemoveActivity = (actId) => {
     const updatedSelectedIds = (trip.selectedActivities || []).filter(
       (id) => id !== actId
@@ -132,24 +229,26 @@ export const TripDetailPage = () => {
     });
   };
 
-  // Update Transport Choice
-  const handleUpdateTransport = (legKey, modeId, fare) => {
-    const updatedChoices = {
-      ...(trip.transportChoices || {}),
-      [legKey]: modeId
-    };
-    const updatedFares = {
-      ...(trip.transportFares || {}),
-      [legKey]: fare
-    };
+  const handleRemoveActivityFromStop = (stopIdx, actId) => {
+    const updatedStops = [...tripStops];
+    const targetStop = updatedStops[stopIdx];
+    if (targetStop) {
+      targetStop.assignedActivities = (targetStop.assignedActivities || []).filter(
+        (id) => id !== actId
+      );
+      updatedStops[stopIdx] = targetStop;
+    }
+
+    const newSelectedActs = Array.from(
+      new Set(updatedStops.flatMap((s) => s.assignedActivities || []))
+    );
 
     updateTrip(trip.id, {
-      transportChoices: updatedChoices,
-      transportFares: updatedFares
+      cities: updatedStops,
+      selectedActivities: newSelectedActs
     });
   };
 
-  // Handle Delete Trip
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete "${trip.title}"?`)) {
       deleteTrip(trip.id);
@@ -157,23 +256,21 @@ export const TripDetailPage = () => {
     }
   };
 
-  // Open add activity modal for specific day
-  const handleOpenAddModal = (dayNum) => {
-    setSelectedDayForModal(dayNum);
-    setIsAddModalOpen(true);
-  };
-
-  // Find target city for selected day modal
-  const targetDayObj = daysList.find((d) => d.dayNumber === selectedDayForModal);
-  const targetCityId = targetDayObj ? targetDayObj.cityId : trip.cities?.[0]?.cityId;
-  const targetCityName = targetDayObj ? targetDayObj.cityName : trip.cities?.[0]?.cityName;
-
-  // Selected activities list (catalog + custom)
   const catalogActs = activities.filter((a) =>
     trip.selectedActivities?.includes(a.id)
   );
   const customActs = trip.customActivities || [];
   const allTripActivities = [...catalogActs, ...customActs];
+
+  const totalStopsSubtotal = tripStops.reduce((sum, stop) => {
+    const city = cities.find((c) => c.id === stop.cityId || c.name === stop.cityName);
+    const daily = city ? city.avgDailyCost : 2500;
+    const days = stop.days || 3;
+    const lodging = daily * days;
+    const stopActs = activities.filter((a) => (stop.assignedActivities || []).includes(a.id));
+    const actSum = stopActs.reduce((s, a) => s + (a.cost || 0), 0);
+    return sum + lodging + actSum;
+  }, 0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
@@ -246,16 +343,22 @@ export const TripDetailPage = () => {
           {/* Route Legs Pill Stream */}
           <div className="flex items-center gap-2 flex-wrap pt-1">
             <span className="text-xs text-slate-300 font-semibold flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-brand-400" /> Multi-City Route:
+              <MapPin className="w-3.5 h-3.5 text-brand-400" /> Stops Sequence:
             </span>
-            {(trip.cities || []).map((leg, idx) => (
-              <span
-                key={leg.cityId}
-                className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-xl text-xs font-bold text-white border border-white/20"
-              >
-                {leg.cityName} ({leg.days}d)
+            {tripStops.length === 0 ? (
+              <span className="text-xs text-amber-300 font-medium italic">
+                No stops added yet. Click "+ Add Stop" below!
               </span>
-            ))}
+            ) : (
+              tripStops.map((leg, idx) => (
+                <span
+                  key={idx}
+                  className="px-3 py-1 bg-white/20 backdrop-blur-md rounded-xl text-xs font-bold text-white border border-white/20"
+                >
+                  #{idx + 1} {leg.cityName} ({leg.days || 3}d)
+                </span>
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -263,16 +366,115 @@ export const TripDetailPage = () => {
       {/* Navigation Tabs */}
       <Tabs
         tabs={[
+          { id: 'stops', label: `Itinerary Builder (${tripStops.length} Stops)`, icon: Layers },
+          { id: 'calendar', label: 'Calendar Grid', icon: CalendarDays },
+          { id: 'view', label: 'Itinerary View (Read-Only)', icon: Eye },
           { id: 'itinerary', label: 'Day-by-Day Timeline', icon: Calendar },
           { id: 'transport', label: 'Inter-City Connections', icon: Train },
-          { id: 'budget', label: 'Budget Analytics', icon: DollarSign },
-          { id: 'cities', label: 'Destinations Breakdown', icon: MapPin }
+          { id: 'budget', label: 'Budget Analytics (Recharts)', icon: PieIcon }
         ]}
         activeTab={activeTab}
         onChange={setActiveTab}
       />
 
-      {/* TAB 1: DAY-BY-DAY TIMELINE */}
+      {/* TAB 1: ITINERARY BUILDER (STOPS LIST & DND) */}
+      {activeTab === 'stops' && (
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-brand-500" />
+                Multi-Stop Itinerary Builder ({tripStops.length} Destination Legs)
+              </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Add city stops, assign arrival/departure dates, pick activities, and reorder legs easily.
+              </p>
+            </div>
+
+            <Button
+              variant="primary"
+              size="md"
+              icon={Plus}
+              onClick={handleOpenAddStop}
+            >
+              Add Stop
+            </Button>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-sand-50 border border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-4 text-slate-700 font-semibold">
+              <span>Target Budget: <span className="font-extrabold text-slate-900">₹{(trip.totalBudget || 0).toLocaleString()}</span></span>
+              <span>Running Stops Subtotal: <span className="font-extrabold text-emerald-600">₹{totalStopsSubtotal.toLocaleString()}</span></span>
+            </div>
+            <span className="text-slate-500 font-medium">
+              Drag cards or use ⬆️ ⬇️ arrows to reorder stop legs
+            </span>
+          </div>
+
+          {tripStops.length === 0 ? (
+            <Card className="text-center py-16 flex flex-col items-center gap-3 border-dashed border-slate-300">
+              <Layers className="w-12 h-12 text-slate-300" />
+              <h3 className="text-base font-bold text-slate-900">No stops added to this trip yet</h3>
+              <p className="text-xs text-slate-500 max-w-sm">
+                Click "+ Add Stop" to choose a destination city, set arrival/departure dates, and assign experiences.
+              </p>
+              <Button size="sm" variant="primary" icon={Plus} onClick={handleOpenAddStop}>
+                Add First Stop
+              </Button>
+            </Card>
+          ) : (
+            <div className="flex flex-col gap-4">
+              {tripStops.map((stop, idx) => {
+                const cityObj = cities.find(
+                  (c) => c.id === stop.cityId || c.name === stop.cityName
+                );
+                const assignedActs = activities.filter((a) =>
+                  (stop.assignedActivities || []).includes(a.id)
+                );
+
+                return (
+                  <ExpandableStopCard
+                    key={idx}
+                    stop={stop}
+                    stopIndex={idx}
+                    totalStops={tripStops.length}
+                    cityObj={cityObj}
+                    assignedActivitiesList={assignedActs}
+                    onMoveStop={handleMoveStop}
+                    onEditStop={handleOpenEditStop}
+                    onRemoveStop={handleRemoveStop}
+                    onOpenAddActivityModal={(index, city) => {
+                      setSelectedDayForModal(index + 1);
+                      setIsAddActivityModalOpen(true);
+                    }}
+                    onRemoveActivityFromStop={handleRemoveActivityFromStop}
+                    onDragStart={handleDragStart}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* TAB 2: CALENDAR GRID (DATE RANGE & DAY DETAIL PANEL) */}
+      {activeTab === 'calendar' && (
+        <TripCalendarTimelineView
+          trip={trip}
+          cities={cities}
+          activities={activities}
+          onUpdateTrip={updateTrip}
+        />
+      )}
+
+      {/* TAB 3: ITINERARY VIEW (TIMELINE VS GROUPED BY CITY TOGGLE) */}
+      {activeTab === 'view' && (
+        <TripItineraryView trip={trip} cities={cities} activities={activities} />
+      )}
+
+      {/* TAB 4: DAY-BY-DAY TIMELINE */}
       {activeTab === 'itinerary' && (
         <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
@@ -287,7 +489,6 @@ export const TripDetailPage = () => {
 
           <div className="flex flex-col gap-6">
             {daysList.map((day) => {
-              // Get activities assigned to this day number
               const dayActivities = allTripActivities.filter(
                 (a) => a.dayNumber === day.dayNumber
               );
@@ -299,7 +500,10 @@ export const TripDetailPage = () => {
                   cityName={day.cityName}
                   dateString={`Leg Day ${day.legDay}`}
                   activitiesForDay={dayActivities}
-                  onOpenAddModal={handleOpenAddModal}
+                  onOpenAddModal={(dayNum) => {
+                    setSelectedDayForModal(dayNum);
+                    setIsAddActivityModalOpen(true);
+                  }}
                   onRemoveActivity={handleRemoveActivity}
                 />
               );
@@ -308,59 +512,39 @@ export const TripDetailPage = () => {
         </div>
       )}
 
-      {/* TAB 2: TRANSPORT PLANNER */}
+      {/* TAB 5: TRANSPORT PLANNER */}
       {activeTab === 'transport' && (
         <TransportLegPlanner
-          cityLegs={trip.cities || []}
+          cityLegs={tripStops}
           transportChoices={trip.transportChoices || {}}
-          onUpdateChoice={handleUpdateTransport}
+          onUpdateChoice={(legKey, modeId, fare) => {
+            const updatedChoices = { ...(trip.transportChoices || {}), [legKey]: modeId };
+            const updatedFares = { ...(trip.transportFares || {}), [legKey]: fare };
+            updateTrip(trip.id, { transportChoices: updatedChoices, transportFares: updatedFares });
+          }}
         />
       )}
 
-      {/* TAB 3: BUDGET ANALYTICS */}
+      {/* TAB 6: BUDGET ANALYTICS WITH RECHARTS */}
       {activeTab === 'budget' && (
-        <BudgetAnalytics trip={trip} cities={cities} activities={activities} />
+        <TripBudgetBreakdownView trip={trip} cities={cities} activities={activities} />
       )}
 
-      {/* TAB 4: CITIES BREAKDOWN */}
-      {activeTab === 'cities' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {(trip.cities || []).map((leg) => {
-            const city = cities.find((c) => c.id === leg.cityId);
-            if (!city) return null;
-            return (
-              <Card key={city.id} padding="none" className="overflow-hidden">
-                <div className="relative h-44">
-                  <img
-                    src={city.image}
-                    alt={city.name}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-3 right-3">
-                    <Badge variant="ocean">{city.costDisplay}</Badge>
-                  </div>
-                </div>
-                <div className="p-5 flex flex-col gap-2">
-                  <h3 className="text-lg font-bold text-slate-900">{city.name}</h3>
-                  <p className="text-xs text-slate-500 font-semibold">
-                    Allocated Duration: {leg.days} Days
-                  </p>
-                  <p className="text-xs text-slate-600 line-clamp-2 mt-1">
-                    {city.description}
-                  </p>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-      )}
+      {/* Add / Edit Stop Modal */}
+      <AddEditStopModal
+        isOpen={isStopModalOpen}
+        onClose={() => setIsStopModalOpen(false)}
+        stopToEdit={editingStop}
+        stopIndex={editingStopIndex}
+        onSaveStop={handleSaveStop}
+      />
 
       {/* Add Activity Modal */}
       <AddActivityModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        cityId={targetCityId}
-        cityName={targetCityName}
+        isOpen={isAddActivityModalOpen}
+        onClose={() => setIsAddActivityModalOpen(false)}
+        cityId={tripStops[0]?.cityId || 'city-1'}
+        cityName={tripStops[0]?.cityName || 'Jaipur'}
         dayNumber={selectedDayForModal || 1}
         onAddActivity={handleAddActivity}
       />
@@ -369,7 +553,7 @@ export const TripDetailPage = () => {
       <PackingChecklistModal
         isOpen={isPackingModalOpen}
         onClose={() => setIsPackingModalOpen(false)}
-        cities={trip.cities || []}
+        cities={tripStops}
         tripTitle={trip.title}
       />
 
@@ -393,8 +577,8 @@ export const TripDetailPage = () => {
             {`✈️ GLOBETROTTER INDIA ITINERARY: ${trip.title.toUpperCase()}\n`}
             {`Dates: ${trip.startDate} to ${trip.endDate} (${totalDays} Days)\n`}
             {`Budget Target: ₹${(trip.totalBudget || 0).toLocaleString()}\n\n`}
-            {`DESTINATION LEGS:\n`}
-            {(trip.cities || []).map((l, i) => `${i + 1}. ${l.cityName} — ${l.days} Days\n`).join('')}
+            {`DESTINATION LEGS (${tripStops.length}):\n`}
+            {tripStops.map((l, i) => `${i + 1}. ${l.cityName} (${l.arrivalDate || 'Start'} to ${l.departureDate || 'End'}) — ${l.days || 3} Days\n`).join('')}
             {`\nSCHEDULED EXPERIENCES (${allTripActivities.length}):\n`}
             {allTripActivities.map((a, i) => `${i + 1}. [Day ${a.dayNumber || 1}] ${a.title} (₹${a.cost})\n`).join('')}
           </div>
