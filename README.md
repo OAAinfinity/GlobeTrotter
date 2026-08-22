@@ -1,2 +1,2 @@
 # GlobeTrotter
-A simple travel planning application. Screen share in text vap and sense section hello excellent stallomreviews made since
+A simple travel planning application. include me top lictosecond gravity session lost any text bonds appear to the data could not use from the remote deposit chat GPT dolspol careptop, morred, sir, rugz to X Second Ishu Solve Hello Hello Hello
