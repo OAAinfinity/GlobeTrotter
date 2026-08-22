@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '../common/Button';
 import { Badge } from '../common/Badge';
 import { Plus, Compass, Sparkles, MapPin } from 'lucide-react';
@@ -40,15 +41,16 @@ export const DashboardHeader = ({ user, activeTripsCount = 0, onPlanNewTrip }) =
 
         {/* Prominent CTA */}
         <div className="shrink-0 flex items-center gap-3 w-full md:w-auto">
-          <Button
-            variant="secondary"
-            size="lg"
-            icon={Plus}
-            onClick={onPlanNewTrip}
-            className="w-full md:w-auto shadow-lg hover:scale-105 transition-transform"
-          >
-            Plan New Trip
-          </Button>
+          <Link to="/trips/new" className="w-full md:w-auto">
+            <Button
+              variant="secondary"
+              size="lg"
+              icon={Plus}
+              className="w-full shadow-lg hover:scale-105 transition-transform"
+            >
+              Plan New Trip
+            </Button>
+          </Link>
         </div>
       </div>
 

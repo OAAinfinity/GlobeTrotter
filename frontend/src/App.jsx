@@ -6,6 +6,7 @@ import { MobileNav, BottomNav } from './components/layout/MobileNav';
 import { AuthPage } from './pages/AuthPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { MyTripsPage } from './pages/MyTripsPage';
+import { CreateTripPage } from './pages/CreateTripPage';
 import { TripDetailPage } from './pages/TripDetailPage';
 import { DiscoverPage } from './pages/DiscoverPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -52,6 +53,7 @@ const MainLayout = () => {
           <Route path="/login" element={<AuthPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/trips" element={<MyTripsPage />} />
+          <Route path="/trips/new" element={<CreateTripPage />} />
           <Route path="/trips/:tripId" element={<TripDetailPage />} />
           <Route path="/discover" element={<DiscoverPage />} />
           <Route path="/profile" element={<ProfilePage />} />
