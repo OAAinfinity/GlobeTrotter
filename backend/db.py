@@ -79,13 +79,47 @@ def initialize_database():
             updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
         """,
+            """
+        CREATE TABLE IF NOT EXISTS expenses (
+            id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            trip_id INTEGER NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+            category TEXT NOT NULL,
+            description TEXT NOT NULL DEFAULT '',
+            amount DOUBLE PRECISION NOT NULL CHECK (amount > 0),
+            expense_date TEXT NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )
+        """,
+            """
+        CREATE TABLE IF NOT EXISTS trip_shares (
+            id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+            trip_id INTEGER NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+            owner_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            shared_with_email TEXT NOT NULL,
+            permission TEXT NOT NULL DEFAULT 'view' CHECK (permission IN ('view', 'edit')),
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE (trip_id, shared_with_email)
+        )
+        """,
             "CREATE INDEX IF NOT EXISTS idx_trips_user_id ON trips(user_id)",
             "CREATE INDEX IF NOT EXISTS idx_experiences_user_id ON experiences(user_id)",
+            "CREATE INDEX IF NOT EXISTS idx_expenses_user_id ON expenses(user_id)",
+            "CREATE INDEX IF NOT EXISTS idx_expenses_trip_id ON expenses(trip_id)",
+            "CREATE INDEX IF NOT EXISTS idx_expenses_date ON expenses(expense_date)",
+            "CREATE INDEX IF NOT EXISTS idx_trip_shares_trip_id ON trip_shares(trip_id)",
+            "CREATE INDEX IF NOT EXISTS idx_trip_shares_email ON trip_shares(shared_with_email)",
             "CREATE INDEX IF NOT EXISTS idx_experiences_trip_id ON experiences(trip_id)",
             "CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email_lower ON users(LOWER(email))",
         )
         for statement in schema:
             db.execute(statement)
+        db.execute(
+            """
+            ALTER TABLE trip_activities
+            ADD COLUMN IF NOT EXISTS selected_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            """
+        )
         demos = (
             ("Priya Sharma", "priya@globetrotter.in"),
             ("Rohan Verma", "rohan@globetrotter.in"),
