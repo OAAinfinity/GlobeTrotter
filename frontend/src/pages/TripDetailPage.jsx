@@ -9,9 +9,9 @@ import { Modal } from '../components/common/Modal';
 import { DayItineraryCard } from '../components/trips/DayItineraryCard';
 import { ExpandableStopCard } from '../components/trips/ExpandableStopCard';
 import { TripItineraryView } from '../components/trips/TripItineraryView';
+import { TripBudgetBreakdownView } from '../components/trips/TripBudgetBreakdownView';
 import { AddEditStopModal } from '../components/trips/AddEditStopModal';
 import { AddActivityModal } from '../components/trips/AddActivityModal';
-import { BudgetAnalytics } from '../components/trips/BudgetAnalytics';
 import { TransportLegPlanner } from '../components/trips/TransportLegPlanner';
 import { PackingChecklistModal } from '../components/trips/PackingChecklistModal';
 import { ShareTripModal } from '../components/trips/ShareTripModal';
@@ -30,7 +30,8 @@ import {
   Train,
   CheckSquare,
   Layers,
-  Eye
+  Eye,
+  PieChart as PieIcon
 } from 'lucide-react';
 
 export const TripDetailPage = () => {
@@ -367,7 +368,7 @@ export const TripDetailPage = () => {
           { id: 'view', label: 'Itinerary View (Read-Only)', icon: Eye },
           { id: 'itinerary', label: 'Day-by-Day Timeline', icon: Calendar },
           { id: 'transport', label: 'Inter-City Connections', icon: Train },
-          { id: 'budget', label: 'Budget Analytics', icon: DollarSign }
+          { id: 'budget', label: 'Budget Analytics (Recharts)', icon: PieIcon }
         ]}
         activeTab={activeTab}
         onChange={setActiveTab}
@@ -511,9 +512,9 @@ export const TripDetailPage = () => {
         />
       )}
 
-      {/* TAB 5: BUDGET ANALYTICS */}
+      {/* TAB 5: BUDGET ANALYTICS WITH RECHARTS */}
       {activeTab === 'budget' && (
-        <BudgetAnalytics trip={trip} cities={cities} activities={activities} />
+        <TripBudgetBreakdownView trip={trip} cities={cities} activities={activities} />
       )}
 
       {/* Add / Edit Stop Modal */}
