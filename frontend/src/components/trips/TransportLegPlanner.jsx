@@ -16,29 +16,29 @@ import {
 
 const TRANSPORT_MODES = [
   {
-    id: 'train',
-    name: 'Vande Bharat / Express Train',
-    icon: Train,
-    avgSpeed: 70, // km/h
-    costPerKm: 2.5, // INR per km
-    badge: 'Eco & Scenic',
-    color: 'brand'
-  },
-  {
     id: 'flight',
-    name: 'Domestic Flight',
+    name: 'International / Domestic Flight',
     icon: Plane,
-    avgSpeed: 500, // km/h
-    costPerKm: 8.0, // INR per km
+    avgSpeed: 700, // km/h
+    costPerKm: 0.15, // USD per km
     badge: 'Fastest',
     color: 'ocean'
   },
   {
+    id: 'train',
+    name: 'Express High-Speed Rail',
+    icon: Train,
+    avgSpeed: 220, // km/h
+    costPerKm: 0.08, // USD per km
+    badge: 'Eco & Scenic',
+    color: 'brand'
+  },
+  {
     id: 'cab',
-    name: 'Private Cab / Drive',
+    name: 'Private Transfer / Drive',
     icon: Car,
-    avgSpeed: 60, // km/h
-    costPerKm: 12.0, // INR per km
+    avgSpeed: 90, // km/h
+    costPerKm: 0.25, // USD per km
     badge: 'Flexible & Direct',
     color: 'emerald'
   }
@@ -46,7 +46,7 @@ const TRANSPORT_MODES = [
 
 export const TransportLegPlanner = ({
   cityLegs = [],
-  transportChoices = {}, // { 'leg-0-1': 'train' }
+  transportChoices = {},
   onUpdateChoice
 }) => {
   if (cityLegs.length < 2) {
@@ -57,13 +57,11 @@ export const TransportLegPlanner = ({
     );
   }
 
-  // Helper to compute rough distance between Indian cities (km approximation)
   const estimateDistance = (cityA, cityB) => {
-    // Basic hash based pseudo distance between 250km and 900km
     const charCodeSum = (cityA + cityB)
       .split('')
       .reduce((sum, char) => sum + char.charCodeAt(0), 0);
-    return 250 + (charCodeSum % 650);
+    return 400 + (charCodeSum % 1200);
   };
 
   return (
@@ -74,7 +72,7 @@ export const TransportLegPlanner = ({
           Inter-City Transport & Connections Planner
         </h3>
         <p className="text-xs text-slate-500 mt-0.5">
-          Select travel modes between city legs (Train, Flight, Private Cab) with estimated durations & fares
+          Select travel modes between global city legs (Flight, Rail, Private Transfer) with estimated durations & fares
         </p>
       </div>
 
@@ -82,7 +80,7 @@ export const TransportLegPlanner = ({
         {cityLegs.slice(0, -1).map((leg, idx) => {
           const nextLeg = cityLegs[idx + 1];
           const legKey = `leg-${idx}-${idx + 1}`;
-          const currentModeId = transportChoices[legKey] || 'train';
+          const currentModeId = transportChoices[legKey] || 'flight';
           const distanceKm = estimateDistance(leg.cityName, nextLeg.cityName);
 
           return (
@@ -107,7 +105,6 @@ export const TransportLegPlanner = ({
                   const Icon = mode.icon;
                   const isSelected = currentModeId === mode.id;
 
-                  // Compute travel duration & estimated cost
                   const travelHours = (distanceKm / mode.avgSpeed).toFixed(1);
                   const estFare = Math.round(distanceKm * mode.costPerKm);
 
@@ -146,7 +143,7 @@ export const TransportLegPlanner = ({
                           <Clock className="w-3 h-3 text-slate-400" /> ~{travelHours}h
                         </span>
                         <span className="font-extrabold text-emerald-600">
-                          ₹{estFare.toLocaleString()}
+                          ${estFare.toLocaleString()}
                         </span>
                       </div>
                     </button>

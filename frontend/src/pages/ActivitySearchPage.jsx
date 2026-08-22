@@ -1,21 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
 import { ActivityCard } from '../components/discovery/ActivityCard';
-import { Card } from '../components/common/Card';
-import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
 import { Badge } from '../components/common/Badge';
-import {
-  Search,
-  Sparkles,
-  Filter,
-  Clock,
-  DollarSign,
-  Compass,
-  CheckCircle2,
-  Briefcase
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Button } from '../components/common/Button';
+import { Search, Compass, Sparkles, Filter, Check, MapPin, DollarSign, Calendar } from 'lucide-react';
 
 const CATEGORIES = [
   'All Categories',
@@ -28,138 +17,149 @@ const CATEGORIES = [
 
 const COST_RANGES = [
   { id: 'all', label: 'All Prices' },
-  { id: 'free', label: 'Free (₹0)' },
-  { id: 'under-1000', label: 'Under ₹1,000' },
-  { id: '1000-3000', label: '₹1,000 - ₹3,000' },
-  { id: 'over-3000', label: 'Over ₹3,000' }
+  { id: 'free', label: 'Free' },
+  { id: 'under30', label: 'Under $30' },
+  { id: '30-60', label: '$30 - $60' },
+  { id: 'over60', label: 'Over $60' }
 ];
 
-const DURATIONS = [
-  { id: 'all', label: 'All Durations' },
-  { id: 'short', label: 'Quick (< 2h)' },
-  { id: 'medium', label: 'Half-Day (2 - 4h)' },
-  { id: 'long', label: 'Full-Day (> 4h)' }
+const DURATION_FILTERS = [
+  { id: 'all', label: 'Any Duration' },
+  { id: 'quick', label: 'Quick (≤ 2 hrs)' },
+  { id: 'half', label: 'Half-Day (2 - 4 hrs)' },
+  { id: 'full', label: 'Full-Day (> 4 hrs)' }
 ];
 
 export const ActivitySearchPage = () => {
   const { activities, trips, updateTrip, currentUser } = useApp();
 
+  // Active Selected Trip Header Selector
   const userTrips = trips.filter((t) => !currentUser || t.userId === currentUser.id);
+  const [selectedTripId, setSelectedTripId] = useState(userTrips[0]?.id || trips[0]?.id || '');
 
-  // Selected Trip State
-  const [selectedTripId, setSelectedTripId] = useState(userTrips[0]?.id || '');
+  const activeTrip = trips.find((t) => t.id === selectedTripId) || userTrips[0] || trips[0];
 
-  // Filter States
+  // Filters
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedCostRange, setSelectedCostRange] = useState('all');
   const [selectedDuration, setSelectedDuration] = useState('all');
 
-  const selectedTrip = trips.find((t) => t.id === selectedTripId);
-  const selectedActivityIds = selectedTrip?.selectedActivities || [];
+  // Activity Schedule Toggle Button Handler
+  const handleToggleActivityForTrip = (activity) => {
+    if (!activeTrip) return;
 
-  // Toggle Activity Selection in Trip
-  const handleToggleActivity = (activity) => {
-    if (!selectedTrip) return;
+    const currentSelectedIds = activeTrip.selectedActivities || [];
+    let updatedSelectedIds = [];
 
-    let updatedIds;
-    if (selectedActivityIds.includes(activity.id)) {
-      updatedIds = selectedActivityIds.filter((id) => id !== activity.id);
+    if (currentSelectedIds.includes(activity.id)) {
+      updatedSelectedIds = currentSelectedIds.filter((id) => id !== activity.id);
     } else {
-      updatedIds = [...selectedActivityIds, activity.id];
+      updatedSelectedIds = [...currentSelectedIds, activity.id];
     }
 
-    updateTrip(selectedTrip.id, {
-      selectedActivities: updatedIds
+    updateTrip(activeTrip.id, {
+      selectedActivities: updatedSelectedIds
     });
   };
 
-  // Processed Activities based on Search, Category, Cost Range, and Duration
-  const processedActivities = useMemo(() => {
+  // Filtered Activities
+  const filteredActivities = useMemo(() => {
     return activities.filter((act) => {
-      // Keyword Search
-      const query = searchQuery.toLowerCase().trim();
+      const q = searchQuery.toLowerCase().trim();
       const matchesSearch =
-        !query ||
-        act.title.toLowerCase().includes(query) ||
-        act.description.toLowerCase().includes(query) ||
-        (act.cityName && act.cityName.toLowerCase().includes(query)) ||
-        act.category.toLowerCase().includes(query);
+        !q ||
+        act.title.toLowerCase().includes(q) ||
+        act.cityName.toLowerCase().includes(q) ||
+        act.category.toLowerCase().includes(q) ||
+        (act.description && act.description.toLowerCase().includes(q));
 
-      // Category Filter
       const matchesCategory =
         selectedCategory === 'All Categories' || act.category === selectedCategory;
 
-      // Cost Range Filter
       let matchesCost = true;
       if (selectedCostRange === 'free') matchesCost = act.cost === 0;
-      else if (selectedCostRange === 'under-1000') matchesCost = act.cost > 0 && act.cost < 1000;
-      else if (selectedCostRange === '1000-3000') matchesCost = act.cost >= 1000 && act.cost <= 3000;
-      else if (selectedCostRange === 'over-3000') matchesCost = act.cost > 3000;
+      else if (selectedCostRange === 'under30') matchesCost = act.cost > 0 && act.cost < 30;
+      else if (selectedCostRange === '30-60') matchesCost = act.cost >= 30 && act.cost <= 60;
+      else if (selectedCostRange === 'over60') matchesCost = act.cost > 60;
 
-      // Duration Filter
       let matchesDuration = true;
-      if (selectedDuration === 'short') matchesDuration = act.durationHours < 2;
-      else if (selectedDuration === 'medium') matchesDuration = act.durationHours >= 2 && act.durationHours <= 4;
-      else if (selectedDuration === 'long') matchesDuration = act.durationHours > 4;
+      if (selectedDuration === 'quick') matchesDuration = act.durationHours <= 2;
+      else if (selectedDuration === 'half') matchesDuration = act.durationHours > 2 && act.durationHours <= 4;
+      else if (selectedDuration === 'full') matchesDuration = act.durationHours > 4;
 
       return matchesSearch && matchesCategory && matchesCost && matchesDuration;
     });
   }, [activities, searchQuery, selectedCategory, selectedCostRange, selectedDuration]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-10">
       {/* Header Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-brand-600 via-amber-500 to-amber-600 text-white p-6 sm:p-10 shadow-warm-lg">
-        <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="flex flex-col gap-3 max-w-2xl">
-            <Badge variant="amber" icon={Sparkles} className="bg-white/20 text-white border-white/30">
-              Activity & Experience Search
-            </Badge>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Explore Experiences Across India
-            </h1>
-            <p className="text-white/90 text-xs sm:text-sm leading-relaxed">
-              Search 25+ curated Indian experiences, filter by category, price, or duration, and toggle additions live into your travel itineraries.
-            </p>
-          </div>
-
-          {/* Trip Selector Header Widget */}
-          {userTrips.length > 0 && (
-            <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 flex flex-col gap-2 w-full md:w-80 shrink-0">
-              <span className="text-[11px] font-bold text-white uppercase tracking-wider flex items-center gap-1">
-                <Briefcase className="w-3.5 h-3.5 text-amber-300" /> Active Target Trip
-              </span>
-              <select
-                value={selectedTripId}
-                onChange={(e) => setSelectedTripId(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl text-xs font-bold bg-white text-slate-900 focus:outline-none cursor-pointer"
-              >
-                {userTrips.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.title} ({t.selectedActivities?.length || 0} Scheduled)
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-600 via-brand-500 to-amber-500 text-white p-6 sm:p-10 shadow-warm-lg">
+        <div className="relative z-10 flex flex-col gap-3 max-w-2xl">
+          <Badge variant="amber" icon={Compass} className="bg-white/20 text-white border-white/30">
+            Global Activity Search Hub
+          </Badge>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            Explore Experiences & Activities
+          </h1>
+          <p className="text-white/90 text-xs sm:text-sm leading-relaxed">
+            Filter activities by category, price, and duration across 19 global hubs. Toggle experiences directly onto your active trips!
+          </p>
         </div>
       </div>
 
-      {/* Filter & Search Toolbar */}
-      <div className="p-5 bg-white rounded-3xl border border-slate-200/80 shadow-warm-sm flex flex-col gap-5">
+      {/* Active Trip Selector Header */}
+      {activeTrip && (
+        <div className="p-5 bg-sand-50 rounded-3xl border border-slate-200/80 shadow-warm-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="p-2.5 rounded-2xl bg-brand-500 text-white font-bold">
+              <Calendar className="w-5 h-5" />
+            </span>
+            <div>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                Target Trip for Scheduling:
+              </span>
+              <h3 className="text-base font-extrabold text-slate-900">{activeTrip.title}</h3>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Badge variant="emerald font-extrabold">
+              {(activeTrip.selectedActivities || []).length} Scheduled
+            </Badge>
+
+            {trips.length > 1 && (
+              <select
+                value={selectedTripId}
+                onChange={(e) => setSelectedTripId(e.target.value)}
+                className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-800 focus:outline-none cursor-pointer shadow-2xs"
+              >
+                {trips.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.title}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Filters Toolbar */}
+      <div className="p-5 bg-white rounded-3xl border border-slate-200/80 shadow-warm-sm flex flex-col gap-4">
         {/* Search Input */}
         <Input
-          placeholder="Search activities by title, city, or keywords (e.g. Amber Fort, Boat Ride, Sadhya, Rafting)..."
+          placeholder="Search experiences by title, city, or category (e.g. Eiffel Tower, Colosseum, Pasta, Surfing)..."
           icon={Search}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
 
         {/* Category Pills */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 pt-2 border-t border-slate-100">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-            Filter by Activity Type:
+            Category Filter:
           </span>
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
             {CATEGORIES.map((cat) => (
@@ -179,45 +179,43 @@ export const ActivitySearchPage = () => {
           </div>
         </div>
 
-        {/* Cost Range & Duration Filters Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
-          {/* Cost Range */}
-          <div className="flex flex-col gap-2">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-              <DollarSign className="w-3.5 h-3.5 text-slate-400" /> Cost Range (₹ INR):
+        {/* Price & Duration Filters */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
+              Price Range ($):
             </span>
-            <div className="flex items-center gap-2 flex-wrap">
-              {COST_RANGES.map((range) => (
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {COST_RANGES.map((cost) => (
                 <button
-                  key={range.id}
+                  key={cost.id}
                   type="button"
-                  onClick={() => setSelectedCostRange(range.id)}
-                  className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all ${
-                    selectedCostRange === range.id
-                      ? 'bg-emerald-600 text-white shadow-xs font-bold'
+                  onClick={() => setSelectedCostRange(cost.id)}
+                  className={`px-2.5 py-1 rounded-xl text-xs font-semibold transition-all ${
+                    selectedCostRange === cost.id
+                      ? 'bg-ocean-600 text-white shadow-xs font-bold'
                       : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/60'
                   }`}
                 >
-                  {range.label}
+                  {cost.label}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Duration Filter */}
-          <div className="flex flex-col gap-2">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-slate-400" /> Duration:
+          <div>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1.5">
+              Duration:
             </span>
-            <div className="flex items-center gap-2 flex-wrap">
-              {DURATIONS.map((dur) => (
+            <div className="flex items-center gap-1.5 flex-wrap">
+              {DURATION_FILTERS.map((dur) => (
                 <button
                   key={dur.id}
                   type="button"
                   onClick={() => setSelectedDuration(dur.id)}
-                  className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all ${
+                  className={`px-2.5 py-1 rounded-xl text-xs font-semibold transition-all ${
                     selectedDuration === dur.id
-                      ? 'bg-ocean-600 text-white shadow-xs font-bold'
+                      ? 'bg-amber-500 text-white shadow-xs font-bold'
                       : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200/60'
                   }`}
                 >
@@ -234,32 +232,25 @@ export const ActivitySearchPage = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <Compass className="w-5 h-5 text-brand-500" />
-            Activities Catalog ({processedActivities.length} Experiences)
+            Global Experiences Catalog ({filteredActivities.length} Experiences)
           </h2>
-
-          {selectedTrip && (
-            <span className="text-xs text-brand-600 font-bold">
-              Editing: {selectedTrip.title} ({selectedActivityIds.length} Scheduled)
-            </span>
-          )}
         </div>
 
-        {processedActivities.length === 0 ? (
+        {filteredActivities.length === 0 ? (
           <div className="p-12 text-center bg-white rounded-3xl border border-slate-200 text-slate-500 text-sm font-medium">
-            No activities match your search filters. Try resetting category, cost range, or duration filters!
+            No experiences match your search filters. Try clearing category or cost filters!
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {processedActivities.map((act) => {
-              const isScheduled = selectedActivityIds.includes(act.id);
-
+            {filteredActivities.map((act) => {
+              const isScheduled = (activeTrip?.selectedActivities || []).includes(act.id);
               return (
                 <ActivityCard
                   key={act.id}
                   activity={act}
                   isSelected={isScheduled}
-                  onToggleSelect={handleToggleActivity}
-                  showSelectButton={Boolean(selectedTrip)}
+                  onToggleSelect={handleToggleActivityForTrip}
+                  showSelectButton
                 />
               );
             })}

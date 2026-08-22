@@ -1,227 +1,289 @@
+import { CITY_IMAGE_MAP } from './cityImageMap';
+
 export const MOCK_CITIES = [
   {
-    id: 'city-1',
-    name: 'Jaipur',
-    country: 'India',
-    region: 'North India',
-    costIndex: 2, // ₹₹
-    costDisplay: '₹₹',
-    avgDailyCost: 2800,
-    popularityScore: 98,
-    image: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=80',
-    description: 'The Pink City of Rajasthan famous for majestic hill forts, ornate royal palaces, vibrant bazaars, and rich Rajasthani thalis.',
-    tags: ['Palaces & Forts', 'Heritage', 'Shopping', 'Rajasthani Food'],
-    bestSeason: 'Oct to March',
-    featured: true
-  },
-  {
-    id: 'city-2',
-    name: 'Varanasi',
-    country: 'India',
-    region: 'North India',
-    costIndex: 1, // ₹
-    costDisplay: '₹',
-    avgDailyCost: 1800,
-    popularityScore: 96,
-    image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=800&q=80',
-    description: 'One of the world’s oldest continuously inhabited spiritual cities, renowned for ancient Ganges River ghats and hypnotic evening Ganga Aarti.',
-    tags: ['Spiritual Ghats', 'Ganga Aarti', 'Ancient History', 'Silk Sarees'],
-    bestSeason: 'Nov to Feb',
-    featured: true
-  },
-  {
-    id: 'city-3',
-    name: 'Goa',
-    country: 'India',
-    region: 'West India',
-    costIndex: 3, // ₹₹₹
-    costDisplay: '₹₹₹',
-    avgDailyCost: 3800,
-    popularityScore: 97,
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
-    description: 'Tropical coastal state offering golden palm-fringed beaches, Portuguese colonial architecture, beach shacks, and water sports.',
-    tags: ['Beaches', 'Water Sports', 'Nightlife', 'Portuguese Heritage'],
-    bestSeason: 'Nov to Feb',
-    featured: true
-  },
-  {
-    id: 'city-4',
-    name: 'Kochi',
-    country: 'India',
-    region: 'South India',
-    costIndex: 2, // ₹₹
-    costDisplay: '₹₹',
-    avgDailyCost: 2600,
-    popularityScore: 94,
-    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80',
-    description: 'Gateway to Kerala’s backwaters featuring Chinese fishing nets, colonial spice trading streets, Kathakali dance, and serene houseboats.',
-    tags: ['Backwaters', 'Chinese Fishing Nets', 'Ayurveda', 'Seafood'],
-    bestSeason: 'Sept to March',
-    featured: true
-  },
-  {
-    id: 'city-5',
-    name: 'Leh-Ladakh',
-    country: 'India',
-    region: 'Himalayan Region',
-    costIndex: 3, // ₹₹₹
-    costDisplay: '₹₹₹',
-    avgDailyCost: 4200,
+    id: 'city-paris',
+    name: 'Paris',
+    country: 'France',
+    region: 'Europe',
+    costIndex: 3, // $$$
+    costDisplay: '$$$',
+    avgDailyCost: 280, // USD
     popularityScore: 99,
-    image: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=800&q=80',
-    description: 'High-altitude desert wonderland framed by snow-capped Himalayan peaks, Pangong Tso lake, and ancient Buddhist monasteries.',
-    tags: ['High Mountain Passes', 'Pangong Lake', 'Monasteries', 'Adventure Drives'],
+    image: CITY_IMAGE_MAP.Paris,
+    description: 'The City of Light famed for the iconic Eiffel Tower, Louvre Museum, romantic Seine river cruises, and haute cuisine.',
+    tags: ['Eiffel Tower', 'Museums', 'Cuisine', 'Romance'],
+    bestSeason: 'Apr to Oct',
+    featured: true
+  },
+  {
+    id: 'city-london',
+    name: 'London',
+    country: 'United Kingdom',
+    region: 'Europe',
+    costIndex: 3, // $$$
+    costDisplay: '$$$',
+    avgDailyCost: 290,
+    popularityScore: 98,
+    image: CITY_IMAGE_MAP.London,
+    description: 'Historic global metropolis featuring Big Ben, Tower Bridge, West End theater district, royal palaces, and world-class museums.',
+    tags: ['Big Ben', 'Tower Bridge', 'Royal Palaces', 'West End'],
     bestSeason: 'May to Sept',
     featured: true
   },
   {
-    id: 'city-6',
-    name: 'Udaipur',
-    country: 'India',
-    region: 'West India',
-    costIndex: 3, // ₹₹₹
-    costDisplay: '₹₹₹',
-    avgDailyCost: 3500,
-    popularityScore: 95,
-    image: 'https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?auto=format&fit=crop&w=800&q=80',
-    description: 'The Venice of the East, romantic city of serene lakes, marble water palaces, vintage car museums, and rooftop dining.',
-    tags: ['Lake Pichola', 'City Palace', 'Romantic Stays', 'Rooftop Cafes'],
-    bestSeason: 'Sept to March',
-    featured: false
+    id: 'city-dubai',
+    name: 'Dubai',
+    country: 'United Arab Emirates',
+    region: 'Middle East',
+    costIndex: 4, // $$$$
+    costDisplay: '$$$$',
+    avgDailyCost: 350,
+    popularityScore: 97,
+    image: CITY_IMAGE_MAP.Dubai,
+    description: 'Futuristic desert oasis home to Burj Khalifa, luxury shopping malls, Palm Jumeirah islands, and desert safaris.',
+    tags: ['Burj Khalifa', 'Luxury Shopping', 'Desert Safari', 'Modern Architecture'],
+    bestSeason: 'Nov to March',
+    featured: true
   },
   {
-    id: 'city-7',
-    name: 'Manali',
-    country: 'India',
-    region: 'Himalayan Region',
-    costIndex: 2, // ₹₹
-    costDisplay: '₹₹',
-    avgDailyCost: 2500,
-    popularityScore: 93,
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80',
-    description: 'Picturesque Himalayan hill station surrounded by pine forests, Solang Valley snow sports, apple orchards, and mountain streams.',
-    tags: ['Snow Mountains', 'Solang Valley', 'Paragliding', 'Old Manali Cafes'],
-    bestSeason: 'Oct to June',
-    featured: false
-  },
-  {
-    id: 'city-8',
-    name: 'Agra',
-    country: 'India',
-    region: 'North India',
-    costIndex: 2, // ₹₹
-    costDisplay: '₹₹',
-    avgDailyCost: 2200,
+    id: 'city-rome',
+    name: 'Rome',
+    country: 'Italy',
+    region: 'Europe',
+    costIndex: 2, // $$
+    costDisplay: '$$',
+    avgDailyCost: 220,
     popularityScore: 96,
-    image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80',
-    description: 'Home to the iconic Taj Mahal, Agra Fort, Fatehpur Sikri, and famous Mughlai delicacies and petha sweets.',
-    tags: ['Taj Mahal', 'Agra Fort', 'Mughal Architecture', 'Heritage'],
-    bestSeason: 'Oct to March',
-    featured: false
+    image: CITY_IMAGE_MAP.Rome,
+    description: 'The Eternal City packed with ancient wonders like the Colosseum, Vatican City, Trevi Fountain, and mouthwatering pasta & gelato.',
+    tags: ['Colosseum', 'Vatican City', 'Italian Pasta', 'Ancient Ruins'],
+    bestSeason: 'April to June & Sept to Oct',
+    featured: true
   },
   {
-    id: 'city-9',
-    name: 'Rishikesh',
-    country: 'India',
-    region: 'Himalayan Region',
-    costIndex: 1, // ₹
-    costDisplay: '₹',
-    avgDailyCost: 1900,
-    popularityScore: 92,
-    image: 'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=800&q=80',
-    description: 'Yoga Capital of the World along the pristine upper Ganges, offering white-water rafting, suspension bridges, and Beatles ashram.',
-    tags: ['Yoga & Meditation', 'White Water Rafting', 'Laxman Jhula', 'Ganges River'],
-    bestSeason: 'Sept to Nov & Feb to May',
-    featured: false
+    id: 'city-tokyo',
+    name: 'Tokyo',
+    country: 'Japan',
+    region: 'Asia',
+    costIndex: 3, // $$$
+    costDisplay: '$$$',
+    avgDailyCost: 260,
+    popularityScore: 99,
+    image: CITY_IMAGE_MAP.Tokyo,
+    description: 'Vibrant juxtaposition of futuristic neon skyscrapers, Shibuya Crossing, ancient Senso-ji temples, and Michelin ramen spots.',
+    tags: ['Shibuya Crossing', 'Ramen & Sushi', 'Temples', 'Futuristic Tech'],
+    bestSeason: 'March to May & Sept to Nov',
+    featured: true
   },
   {
-    id: 'city-10',
-    name: 'Darjeeling',
-    country: 'India',
-    region: 'East & North-East',
-    costIndex: 2, // ₹₹
-    costDisplay: '₹₹',
-    avgDailyCost: 2400,
-    popularityScore: 91,
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
-    description: 'Queen of the Hills set against Kanchenjunga mountain, famous for UNESCO Toy Train, sprawling tea gardens, and crisp air.',
-    tags: ['Tea Gardens', 'UNESCO Toy Train', 'Kanchenjunga Views', 'Buddhist Monasteries'],
-    bestSeason: 'March to May & Oct to Nov',
-    featured: false
+    id: 'city-sydney',
+    name: 'Sydney',
+    country: 'Australia',
+    region: 'Oceania',
+    costIndex: 3, // $$$
+    costDisplay: '$$$',
+    avgDailyCost: 270,
+    popularityScore: 95,
+    image: CITY_IMAGE_MAP.Sydney,
+    description: 'Coastal paradise featuring the magnificent Sydney Opera House, Harbour Bridge, Bondi Beach surfing, and sunny outdoor dining.',
+    tags: ['Opera House', 'Harbour Bridge', 'Bondi Beach', 'Surfing'],
+    bestSeason: 'Sept to Nov & Feb to April',
+    featured: true
   },
   {
-    id: 'city-11',
-    name: 'Amritsar',
-    country: 'India',
-    region: 'North India',
-    costIndex: 1, // ₹
-    costDisplay: '₹',
-    avgDailyCost: 2000,
-    popularityScore: 94,
-    image: 'https://images.unsplash.com/photo-1588096344356-9a3d463d1f05?auto=format&fit=crop&w=800&q=80',
-    description: 'Spiritual sanctuary housing the breathtaking Golden Temple (Harmandir Sahib), Wagah Border ceremony, and rich Punjabi kulchas.',
-    tags: ['Golden Temple', 'Wagah Border', 'Punjabi Cuisine', 'Spiritual Harmony'],
-    bestSeason: 'Oct to March',
-    featured: false
-  },
-  {
-    id: 'city-12',
-    name: 'Shillong',
-    country: 'India',
-    region: 'East & North-East',
-    costIndex: 2, // ₹₹
-    costDisplay: '₹₹',
-    avgDailyCost: 2300,
-    popularityScore: 90,
-    image: 'https://images.unsplash.com/photo-1627916607164-7b20241db935?auto=format&fit=crop&w=800&q=80',
-    description: 'Scotland of the East, famed for pine-covered hills, crystal waterfalls, live music rock scene, and nearby Living Root Bridges.',
-    tags: ['Living Root Bridges', 'Waterfalls', 'Rock Music', 'Pine Hills'],
-    bestSeason: 'Sept to May',
-    featured: false
-  },
-  {
-    id: 'city-13',
+    id: 'city-mumbai',
     name: 'Mumbai',
     country: 'India',
-    region: 'West India',
-    costIndex: 4, // ₹₹₹₹
-    costDisplay: '₹₹₹₹',
-    avgDailyCost: 5500,
-    popularityScore: 95,
-    image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=80',
-    description: 'City of Dreams, home to Gateway of India, Marine Drive Queen’s Necklace, Bollywood film city, and vibrant street food.',
-    tags: ['Gateway of India', 'Marine Drive', 'Bollywood', 'Vada Pav & Street Food'],
+    region: 'Asia',
+    costIndex: 2, // $$
+    costDisplay: '$$',
+    avgDailyCost: 150,
+    popularityScore: 94,
+    image: CITY_IMAGE_MAP.Mumbai,
+    description: 'Dynamic coastal commercial capital boasting the Gateway of India, Marine Drive promenade, Bollywood glam, and street food.',
+    tags: ['Gateway of India', 'Marine Drive', 'Bollywood', 'Street Food'],
     bestSeason: 'Nov to Feb',
     featured: false
   },
   {
-    id: 'city-14',
-    name: 'Ooty',
-    country: 'India',
-    region: 'South India',
-    costIndex: 2, // ₹₹
-    costDisplay: '₹₹',
-    avgDailyCost: 2500,
-    popularityScore: 89,
-    image: 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=800&q=80',
-    description: 'Charming Nilgiri hill station surrounded by tea plantations, botanical gardens, misty lakes, and heritage mountain railways.',
-    tags: ['Nilgiri Mountain Railway', 'Tea Estates', 'Botanical Gardens', 'Cool Climate'],
-    bestSeason: 'Oct to June',
+    id: 'city-singapore',
+    name: 'Singapore',
+    country: 'Singapore',
+    region: 'Asia',
+    costIndex: 4, // $$$$
+    costDisplay: '$$$$',
+    avgDailyCost: 320,
+    popularityScore: 96,
+    image: CITY_IMAGE_MAP.Singapore,
+    description: 'Garden city metropolis with iconic Marina Bay Sands, Supertree Grove at Gardens by the Bay, hawker street markets, and luxury living.',
+    tags: ['Marina Bay Sands', 'Gardens by the Bay', 'Hawker Food', 'Futuristic Gardens'],
+    bestSeason: 'Year-round',
     featured: false
   },
   {
-    id: 'city-15',
-    name: 'Kolkata',
-    country: 'India',
-    region: 'East & North-East',
-    costIndex: 1, // ₹
-    costDisplay: '₹',
-    avgDailyCost: 1900,
-    popularityScore: 91,
-    image: 'https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=800&q=80',
-    description: 'Cultural Capital of India, famous for Victoria Memorial, historic yellow trams, Howrah Bridge, art galleries, and Bengali sweets.',
-    tags: ['Victoria Memorial', 'Howrah Bridge', 'Yellow Trams', 'Bengali Sweets & Mishti'],
-    bestSeason: 'Oct to March',
+    id: 'city-barcelona',
+    name: 'Barcelona',
+    country: 'Spain',
+    region: 'Europe',
+    costIndex: 2, // $$
+    costDisplay: '$$',
+    avgDailyCost: 210,
+    popularityScore: 95,
+    image: CITY_IMAGE_MAP.Barcelona,
+    description: 'Mediterranean city celebrated for Gaudí’s Sagrada Família, Gothic Quarter streets, tapas bars, and lively Mediterranean beaches.',
+    tags: ['Sagrada Família', 'Gaudí Architecture', 'Tapas & Sangria', 'Beaches'],
+    bestSeason: 'May to June & Sept to Oct',
+    featured: false
+  },
+  {
+    id: 'city-amsterdam',
+    name: 'Amsterdam',
+    country: 'Netherlands',
+    region: 'Europe',
+    costIndex: 2, // $$
+    costDisplay: '$$',
+    avgDailyCost: 230,
+    popularityScore: 94,
+    image: CITY_IMAGE_MAP.Amsterdam,
+    description: 'Enchanting capital of canal bridges, Van Gogh & Rijksmuseum masterpieces, bicycle culture, and historic merchant houses.',
+    tags: ['Canal Cruises', 'Rijksmuseum', 'Bicycle Culture', 'Historic Canals'],
+    bestSeason: 'April to May & Sept to Nov',
+    featured: false
+  },
+  {
+    id: 'city-istanbul',
+    name: 'Istanbul',
+    country: 'Turkey',
+    region: 'Europe & Asia',
+    costIndex: 2, // $$
+    costDisplay: '$$',
+    avgDailyCost: 170,
+    popularityScore: 96,
+    image: CITY_IMAGE_MAP.Istanbul,
+    description: 'Crossroads of continents where East meets West, featuring Hagia Sophia, Blue Mosque, Grand Bazaar, and Bosphorus boat tours.',
+    tags: ['Hagia Sophia', 'Bosphorus Cruises', 'Grand Bazaar', 'Turkish Delights'],
+    bestSeason: 'April to May & Sept to Nov',
+    featured: false
+  },
+  {
+    id: 'city-bangkok',
+    name: 'Bangkok',
+    country: 'Thailand',
+    region: 'Asia',
+    costIndex: 1, // $
+    costDisplay: '$',
+    avgDailyCost: 120,
+    popularityScore: 97,
+    image: CITY_IMAGE_MAP.Bangkok,
+    description: 'Bustling capital of gold-spired Grand Palace temples, floating night markets, tuk-tuks, and world-renowned street food stalls.',
+    tags: ['Grand Palace', 'Floating Markets', 'Street Food', 'Temples'],
+    bestSeason: 'Nov to Feb',
+    featured: false
+  },
+  {
+    id: 'city-seoul',
+    name: 'Seoul',
+    country: 'South Korea',
+    region: 'Asia',
+    costIndex: 2, // $$
+    costDisplay: '$$',
+    avgDailyCost: 200,
+    popularityScore: 95,
+    image: CITY_IMAGE_MAP.Seoul,
+    description: 'K-culture hub blending royal Gyeongbokgung Palace with futuristic Gangnam skyscrapers, K-pop style, and K-BBQ food scenes.',
+    tags: ['Gyeongbokgung Palace', 'K-BBQ', 'Gangnam', 'Shopping & K-Pop'],
+    bestSeason: 'Sept to Nov & March to May',
+    featured: false
+  },
+  {
+    id: 'city-sanfrancisco',
+    name: 'San Francisco',
+    country: 'United States',
+    region: 'North America',
+    costIndex: 3, // $$$
+    costDisplay: '$$$',
+    avgDailyCost: 280,
+    popularityScore: 93,
+    image: CITY_IMAGE_MAP['San Francisco'],
+    description: 'Bay area icon famous for the Golden Gate Bridge, cable cars, Fisherman’s Wharf, Alcatraz Island, and tech innovation.',
+    tags: ['Golden Gate Bridge', 'Cable Cars', 'Alcatraz', 'Bay Area'],
+    bestSeason: 'Sept to Nov',
+    featured: false
+  },
+  {
+    id: 'city-lisbon',
+    name: 'Lisbon',
+    country: 'Portugal',
+    region: 'Europe',
+    costIndex: 2, // $$
+    costDisplay: '$$',
+    avgDailyCost: 180,
+    popularityScore: 93,
+    image: CITY_IMAGE_MAP.Lisbon,
+    description: 'Sun-drenched coastal capital of pastel hills, historic yellow Tram 28, Belém pastéis de nata pastries, and Fado music.',
+    tags: ['Yellow Trams', 'Belém Pastries', 'Fado Music', 'Coastal Views'],
+    bestSeason: 'March to May & Sept to Oct',
+    featured: false
+  },
+  {
+    id: 'city-capetown',
+    name: 'Cape Town',
+    country: 'South Africa',
+    region: 'Africa',
+    costIndex: 2, // $$
+    costDisplay: '$$',
+    avgDailyCost: 190,
+    popularityScore: 92,
+    image: CITY_IMAGE_MAP['Cape Town'],
+    description: 'Dramatic coastal landscape dominated by Table Mountain, V&A Waterfront, Boulders Beach penguins, and Cape winelands.',
+    tags: ['Table Mountain', 'Penguins', 'Cape Winelands', 'Coastal Scenic'],
+    bestSeason: 'Nov to April',
+    featured: false
+  },
+  {
+    id: 'city-lima',
+    name: 'Lima',
+    country: 'Peru',
+    region: 'South America',
+    costIndex: 1, // $
+    costDisplay: '$',
+    avgDailyCost: 130,
+    popularityScore: 90,
+    image: CITY_IMAGE_MAP.Lima,
+    description: 'Gastronomic capital of South America overlooking the Pacific, famed for fresh ceviche, Miraflores cliffside walks, and colonial plazas.',
+    tags: ['Ceviche & Culinary', 'Miraflores', 'Pacific Cliffs', 'Colonial Plazas'],
+    bestSeason: 'Dec to April',
+    featured: false
+  },
+  {
+    id: 'city-mexicocity',
+    name: 'Mexico City',
+    country: 'Mexico',
+    region: 'North America',
+    costIndex: 1, // $
+    costDisplay: '$',
+    avgDailyCost: 140,
+    popularityScore: 92,
+    image: CITY_IMAGE_MAP['Mexico City'],
+    description: 'Vibrant cultural metropolis featuring Palacio de Bellas Artes, Frida Kahlo Museum, ancient Teotihuacan pyramids, and taco markets.',
+    tags: ['Palacio de Bellas Artes', 'Tacos & Mezcal', 'Frida Kahlo', 'Aztec Pyramids'],
+    bestSeason: 'March to May',
+    featured: false
+  },
+  {
+    id: 'city-bali',
+    name: 'Bali',
+    country: 'Indonesia',
+    region: 'Asia',
+    costIndex: 1, // $
+    costDisplay: '$',
+    avgDailyCost: 110,
+    popularityScore: 98,
+    image: CITY_IMAGE_MAP.Bali,
+    description: 'Island of the Gods featuring lush Ubud rice terraces, cliffside sea temples, surf beaches, and holistic beach resorts.',
+    tags: ['Ubud Rice Terraces', 'Sea Temples', 'Surfing & Beaches', 'Wellness Resorts'],
+    bestSeason: 'April to Oct',
     featured: false
   }
 ];

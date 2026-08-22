@@ -1,0 +1,259 @@
+{
+  "archetypes": {
+    "Heritage & Culture": {
+      "profileName": "Heritage & Culture",
+      "description": "Historical palaces, ancient monuments, UNESCO treasures, and classic architecture.",
+      "recommendations": [
+        {
+          "hotelName": "Le Meurice",
+          "city": "Paris",
+          "category": "Heritage Luxury Hotel",
+          "rank": 1,
+          "score": 9.9,
+          "cityImage": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 650
+        },
+        {
+          "hotelName": "Hotel Danieli, A Luxury Collection Hotel",
+          "city": "Rome",
+          "category": "Historic Palace Hotel",
+          "rank": 2,
+          "score": 9.7,
+          "cityImage": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 580
+        },
+        {
+          "hotelName": "Ciragan Palace Kempinski",
+          "city": "Istanbul",
+          "category": "Ottoman Palace Hotel",
+          "rank": 3,
+          "score": 9.6,
+          "cityImage": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 490
+        },
+        {
+          "hotelName": "The Taj Mahal Palace",
+          "city": "Mumbai",
+          "category": "Grand Heritage Landmark",
+          "rank": 4,
+          "score": 9.5,
+          "cityImage": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 320
+        },
+        {
+          "hotelName": "El Convento Hotel",
+          "city": "Barcelona",
+          "category": "Gothic Quarter Boutique",
+          "rank": 5,
+          "score": 9.4,
+          "cityImage": "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 380
+        }
+      ]
+    },
+    "Backpacker & Adventure": {
+      "profileName": "Backpacker & Adventure",
+      "description": "High-altitude hikes, surf beaches, vibrant hostels, and energetic exploration.",
+      "recommendations": [
+        {
+          "hotelName": "Potato Head Suites & Hostels",
+          "city": "Bali",
+          "category": "Eco Beach Lodge",
+          "rank": 1,
+          "score": 9.8,
+          "cityImage": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 85
+        },
+        {
+          "hotelName": "Selina Secret Garden",
+          "city": "Lisbon",
+          "category": "Boutique Hostel & Co-Work",
+          "rank": 2,
+          "score": 9.6,
+          "cityImage": "https://images.unsplash.com/photo-1509803874385-db7c23652552?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 65
+        },
+        {
+          "hotelName": "The Flying Pig Downtown",
+          "city": "Amsterdam",
+          "category": "Canalside Social Hostel",
+          "rank": 3,
+          "score": 9.5,
+          "cityImage": "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 55
+        },
+        {
+          "hotelName": "Pariwana Hostel Miraflores",
+          "city": "Lima",
+          "category": "Coastal Backpacker Lodge",
+          "rank": 4,
+          "score": 9.3,
+          "cityImage": "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 45
+        },
+        {
+          "hotelName": "Lub d Bangkok Siam",
+          "city": "Bangkok",
+          "category": "Urban Adventure Hostel",
+          "rank": 5,
+          "score": 9.2,
+          "cityImage": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 40
+        }
+      ]
+    },
+    "Luxury & Wellness": {
+      "profileName": "Luxury & Wellness",
+      "description": "5-star luxury sanctuaries, infinity pools, Michelin dining, and holistic spas.",
+      "recommendations": [
+        {
+          "hotelName": "Burj Al Arab Jumeirah",
+          "city": "Dubai",
+          "category": "Ultra Luxury Resort",
+          "rank": 1,
+          "score": 9.9,
+          "cityImage": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 1200
+        },
+        {
+          "hotelName": "Marina Bay Sands Hotel",
+          "city": "Singapore",
+          "category": "Iconic Luxury Landmark",
+          "rank": 2,
+          "score": 9.8,
+          "cityImage": "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 750
+        },
+        {
+          "hotelName": "Aman Tokyo",
+          "city": "Tokyo",
+          "category": "Zen Wellness Retreat",
+          "rank": 3,
+          "score": 9.7,
+          "cityImage": "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 950
+        },
+        {
+          "hotelName": "Four Seasons Resort Bali at Sayan",
+          "city": "Bali",
+          "category": "Jungle Wellness Sanctuary",
+          "rank": 4,
+          "score": 9.6,
+          "cityImage": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 680
+        },
+        {
+          "hotelName": "The Silo Hotel",
+          "city": "Cape Town",
+          "category": "Design & Luxury Spa Hotel",
+          "rank": 5,
+          "score": 9.5,
+          "cityImage": "https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 820
+        }
+      ]
+    },
+    "Family Friendly": {
+      "profileName": "Family Friendly",
+      "description": "Spacious family suites, beachfront parks, easy transit, and kid-approved amenities.",
+      "recommendations": [
+        {
+          "hotelName": "Park Hyatt Sydney",
+          "city": "Sydney",
+          "category": "Harbourfront Family Hotel",
+          "rank": 1,
+          "score": 9.7,
+          "cityImage": "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 520
+        },
+        {
+          "hotelName": "The Ritz-London",
+          "city": "London",
+          "category": "Classic Family Residence",
+          "rank": 2,
+          "score": 9.6,
+          "cityImage": "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 610
+        },
+        {
+          "hotelName": "Lotte Hotel Seoul",
+          "city": "Seoul",
+          "category": "City Center Family Hotel",
+          "rank": 3,
+          "score": 9.5,
+          "cityImage": "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 340
+        },
+        {
+          "hotelName": "Fairmont San Francisco",
+          "city": "San Francisco",
+          "category": "Nob Hill Landmark Hotel",
+          "rank": 4,
+          "score": 9.4,
+          "cityImage": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 390
+        },
+        {
+          "hotelName": "Four Seasons Hotel Mexico City",
+          "city": "Mexico City",
+          "category": "Courtyard Family Sanctuary",
+          "rank": 5,
+          "score": 9.3,
+          "cityImage": "https://images.unsplash.com/photo-1512813195386-6cf811ad3542?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 360
+        }
+      ]
+    },
+    "Food & Culinary Explorer": {
+      "profileName": "Food & Culinary Explorer",
+      "description": "Gastronomic havens, street food night markets, wine cellars, and Michelin spots.",
+      "recommendations": [
+        {
+          "hotelName": "Mandarin Oriental Bangkok",
+          "city": "Bangkok",
+          "category": "Culinary Heritage Legend",
+          "rank": 1,
+          "score": 9.8,
+          "cityImage": "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 480
+        },
+        {
+          "hotelName": "Majestic Hotel & Spa",
+          "city": "Barcelona",
+          "category": "Gastronomy Boutique Hotel",
+          "rank": 2,
+          "score": 9.6,
+          "cityImage": "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 410
+        },
+        {
+          "hotelName": "The Oberoi Mumbai",
+          "city": "Mumbai",
+          "category": "Oceanfront Culinary Hub",
+          "rank": 3,
+          "score": 9.5,
+          "cityImage": "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 290
+        },
+        {
+          "hotelName": "Hotel B Unique",
+          "city": "Lima",
+          "category": "Ceviche & Culinary Arts Lodge",
+          "rank": 4,
+          "score": 9.4,
+          "cityImage": "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 270
+        },
+        {
+          "hotelName": "Pestana CR7 Lisboa",
+          "city": "Lisbon",
+          "category": "Bistronomy & Lifestyle Hotel",
+          "rank": 5,
+          "score": 9.3,
+          "cityImage": "https://images.unsplash.com/photo-1509803874385-db7c23652552?auto=format&fit=crop&w=800&q=80",
+          "pricePerNight": 230
+        }
+      ]
+    }
+  }
+}

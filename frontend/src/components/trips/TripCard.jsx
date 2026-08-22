@@ -80,7 +80,7 @@ export const TripCard = ({ trip, onDeleteRequest, className = '' }) => {
         <div className="flex flex-col">
           <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Target Budget</span>
           <span className="text-xs font-extrabold text-slate-900">
-            ₹{(trip.totalBudget || 0).toLocaleString()}
+            ${(trip.totalBudget || 0).toLocaleString()}
           </span>
         </div>
 

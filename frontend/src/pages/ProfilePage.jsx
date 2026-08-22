@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { HotelRecommendationsWidget } from '../components/dashboard/HotelRecommendationsWidget';
 import { Card } from '../components/common/Card';
 import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
@@ -12,9 +13,8 @@ export const ProfilePage = () => {
   const [name, setName] = useState(currentUser?.name || '');
   const [bio, setBio] = useState(currentUser?.bio || '');
   const [travelStyle, setTravelStyle] = useState(currentUser?.travelStyle || 'Heritage & Culture');
-  const [homeCity, setHomeCity] = useState(currentUser?.homeCity || 'New Delhi');
+  const [homeCity, setHomeCity] = useState(currentUser?.homeCity || 'Paris');
   const [budgetLevel, setBudgetLevel] = useState(currentUser?.preferences?.budgetLevel || 'Moderate');
-  const [pace, setPace] = useState(currentUser?.preferences?.pace || 'Balanced');
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -25,8 +25,7 @@ export const ProfilePage = () => {
       homeCity,
       preferences: {
         ...(currentUser?.preferences || {}),
-        budgetLevel,
-        pace
+        budgetLevel
       }
     });
   };
@@ -42,13 +41,13 @@ export const ProfilePage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-10">
       <div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          User Profile & Preferences
+          User Profile & Archetype Preferences
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1">
-          Manage your traveler persona, preferred budget tiers, and itinerary settings.
+          Manage your traveler persona, travel style archetype, and personalized hotel recommendations.
         </p>
       </div>
 
@@ -71,7 +70,7 @@ export const ProfilePage = () => {
                 {currentUser.travelStyle}
               </Badge>
               <Badge variant="emerald">
-                ₹ {currentUser.preferences?.budgetLevel || 'Moderate'}
+                {currentUser.preferences?.budgetLevel || 'Moderate'}
               </Badge>
             </div>
 
@@ -90,7 +89,7 @@ export const ProfilePage = () => {
             <form onSubmit={handleSave} className="flex flex-col gap-5">
               <h3 className="text-base font-bold text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-brand-500" />
-                Edit Profile Details & Travel Preferences
+                Edit Profile & Archetype Settings
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -112,7 +111,7 @@ export const ProfilePage = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-xs font-semibold text-slate-700 block mb-1">
-                    Travel Persona & Style
+                    Travel Archetype / Style
                   </label>
                   <select
                     value={travelStyle}
@@ -136,9 +135,9 @@ export const ProfilePage = () => {
                     onChange={(e) => setBudgetLevel(e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl text-xs font-semibold bg-slate-50 border border-slate-200 text-slate-800 focus:outline-none focus:border-brand-500 cursor-pointer"
                   >
-                    <option value="Budget">₹ Budget (Backpacker / Hostels)</option>
-                    <option value="Moderate">₹₹ Moderate (Comfort Hotels & Trains)</option>
-                    <option value="Luxury">₹₹₹ Luxury (Palaces & Resorts)</option>
+                    <option value="Budget">Budget ($ Hostels & Lodges)</option>
+                    <option value="Moderate">Moderate ($$ Boutique & Comfort)</option>
+                    <option value="Luxury">Luxury ($$$ Luxury Resorts)</option>
                   </select>
                 </div>
               </div>
@@ -162,6 +161,9 @@ export const ProfilePage = () => {
           </Card>
         </div>
       </div>
+
+      {/* Dynamic Recommendation Widget for User's Archetype */}
+      <HotelRecommendationsWidget userTravelStyle={travelStyle} />
     </div>
   );
 };

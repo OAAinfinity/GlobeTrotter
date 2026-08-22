@@ -5,6 +5,7 @@ import { Card } from '../components/common/Card';
 import { Button } from '../components/common/Button';
 import { Input } from '../components/common/Input';
 import { Badge } from '../components/common/Badge';
+import { CITY_IMAGE_MAP } from '../data/cityImageMap';
 import {
   Compass,
   Calendar,
@@ -20,24 +21,28 @@ import {
 
 const COVER_PRESETS = [
   {
-    name: 'Rajasthan Forts',
-    url: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=80'
+    name: 'Paris Eiffel Tower',
+    url: CITY_IMAGE_MAP.Paris
   },
   {
-    name: 'Kerala Backwaters',
-    url: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80'
+    name: 'London Big Ben',
+    url: CITY_IMAGE_MAP.London
   },
   {
-    name: 'Himalayan Manali',
-    url: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80'
+    name: 'Dubai Burj Khalifa',
+    url: CITY_IMAGE_MAP.Dubai
   },
   {
-    name: 'Goa Coast',
-    url: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80'
+    name: 'Rome Colosseum',
+    url: CITY_IMAGE_MAP.Rome
   },
   {
-    name: 'Leh-Ladakh Passes',
-    url: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=800&q=80'
+    name: 'Tokyo Shibuya Skyline',
+    url: CITY_IMAGE_MAP.Tokyo
+  },
+  {
+    name: 'Sydney Opera House',
+    url: CITY_IMAGE_MAP.Sydney
   }
 ];
 
@@ -50,7 +55,7 @@ export const CreateTripPage = () => {
   const [startDate, setStartDate] = useState('2026-10-15');
   const [endDate, setEndDate] = useState('2026-10-25');
   const [description, setDescription] = useState('');
-  const [totalBudget, setTotalBudget] = useState(35000);
+  const [totalBudget, setTotalBudget] = useState(4500);
   const [coverImage, setCoverImage] = useState(COVER_PRESETS[0].url);
 
   // Validation States
@@ -74,7 +79,6 @@ export const CreateTripPage = () => {
     }
   };
 
-  // Field change handler to clear errors dynamically
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
     if (errors.title) setErrors((prev) => ({ ...prev, title: '' }));
@@ -182,7 +186,7 @@ export const CreateTripPage = () => {
           <Input
             id="title"
             label="Trip Name"
-            placeholder="e.g. Royal Rajasthan & Golden Triangle Exploration"
+            placeholder="e.g. European Cultural Capitals Tour"
             value={title}
             onChange={handleTitleChange}
             icon={Compass}
@@ -219,8 +223,8 @@ export const CreateTripPage = () => {
           <Input
             id="totalBudget"
             type="number"
-            label="Target Budget (₹ INR)"
-            placeholder="35000"
+            label="Target Budget ($ USD)"
+            placeholder="4500"
             value={totalBudget}
             onChange={(e) => {
               setTotalBudget(e.target.value);
@@ -275,7 +279,7 @@ export const CreateTripPage = () => {
             {/* Preset Buttons */}
             <div>
               <span className="text-xs text-slate-500 font-semibold block mb-2">
-                Choose a Featured Indian Preset:
+                Choose a Featured Global Preset:
               </span>
               <div className="flex flex-wrap gap-2">
                 {COVER_PRESETS.map((preset) => (

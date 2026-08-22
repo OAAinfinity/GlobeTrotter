@@ -1,273 +1,303 @@
 export const MOCK_ACTIVITIES = [
-  // Jaipur
+  // Paris
   {
-    id: 'act-1',
-    cityId: 'city-1',
-    title: 'Amber Fort Elephant/Jeep Safari & Sound Light Show',
-    category: 'Sightseeing',
-    cost: 450,
-    durationHours: 3.0,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=600&q=80',
-    description: 'Ascend the hilltop Amber Fort and watch evening light & sound narration of Rajput valor.'
+    id: 'act-paris-1',
+    cityId: 'city-paris',
+    cityName: 'Paris',
+    title: 'Eiffel Tower Summit & Champagne Glass',
+    category: 'Sightseeing & Heritage',
+    cost: 45,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80',
+    description: 'Elevator access to the top floor of Eiffel Tower with panoramic views over Paris and a toast of French Champagne.'
   },
   {
-    id: 'act-2',
-    cityId: 'city-1',
-    title: 'Johari Bazaar Food & Heritage Craft Walk',
-    category: 'Food & Dining',
-    cost: 650,
+    id: 'act-paris-2',
+    cityId: 'city-paris',
+    cityName: 'Paris',
+    title: 'Louvre Museum Guided Masterpiece Tour',
+    category: 'Sightseeing & Heritage',
+    cost: 65,
     durationHours: 2.5,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=600&q=80',
-    description: 'Taste hot Pyaz Kachori, Ghevar sweets, and explore blue pottery and gemstone artisans.'
+    image: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=600&q=80',
+    description: 'Skip-the-line entrance to see the Mona Lisa, Venus de Milo, and Winged Victory with an expert art historian.'
   },
 
-  // Varanasi
+  // London
   {
-    id: 'act-3',
-    cityId: 'city-2',
-    title: 'Dashashwamedh Ghat Evening Ganga Aarti Boat Ride',
-    category: 'Culture',
-    cost: 350,
-    durationHours: 2.0,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=600&q=80',
-    description: 'Witness priests performing sacred oil lamp rituals along the Ganges from a wooden rowboat.'
+    id: 'act-london-1',
+    cityId: 'city-london',
+    cityName: 'London',
+    title: 'Tower of London & Crown Jewels Entrance',
+    category: 'Sightseeing & Heritage',
+    cost: 40,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=600&q=80',
+    description: 'Explore royal history, Meet the Yeoman Warders, and marvel at the sparkling British Crown Jewels.'
   },
   {
-    id: 'act-4',
-    cityId: 'city-2',
-    title: 'Sunrise Ganges Boat Ride & Alleyway Lassi Crawl',
-    category: 'Sightseeing',
-    cost: 400,
-    durationHours: 2.5,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=600&q=80',
-    description: 'Glide along morning ghats as the sun rises, followed by Blue Lassi in clay kulhad cups.'
+    id: 'act-london-2',
+    cityId: 'city-london',
+    cityName: 'London',
+    title: 'Westminster Abbey & Big Ben Walking Tour',
+    category: 'Sightseeing & Heritage',
+    cost: 35,
+    durationHours: 2,
+    image: 'https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&w=600&q=80',
+    description: 'Walk through royal coronation sites, Parliament Square, and photograph Big Ben & Elizabeth Tower.'
   },
 
-  // Goa
+  // Dubai
   {
-    id: 'act-5',
-    cityId: 'city-3',
-    title: 'Calangute & Baga Water Sports Combo',
-    category: 'Adventure',
-    cost: 1800,
+    id: 'act-dubai-1',
+    cityId: 'city-dubai',
+    cityName: 'Dubai',
+    title: 'Burj Khalifa At The Top (124th & 125th Floor)',
+    category: 'Sightseeing & Heritage',
+    cost: 55,
+    durationHours: 2,
+    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=80',
+    description: 'Ride the world’s fastest double-deck elevator to observation decks over Dubai skyline and Fountain show.'
+  },
+  {
+    id: 'act-dubai-2',
+    cityId: 'city-dubai',
+    cityName: 'Dubai',
+    title: 'Red Dune Desert Safari & BBQ Dinner',
+    category: 'Adventure & Water Sports',
+    cost: 85,
+    durationHours: 6,
+    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80',
+    description: '4x4 dune bashing, camel riding, sandboarding, falconry, and traditional Arabian BBQ camp dinner.'
+  },
+
+  // Rome
+  {
+    id: 'act-rome-1',
+    cityId: 'city-rome',
+    cityName: 'Rome',
+    title: 'Colosseum & Roman Forum Underground Tour',
+    category: 'Sightseeing & Heritage',
+    cost: 75,
     durationHours: 3.5,
-    rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80',
-    description: 'Experience parasailing, jet skiing, banana boat rides, and ocean dip along North Goa beaches.'
+    image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=600&q=80',
+    description: 'Access the gladiator arena floor, underground dungeons, Palatine Hill, and ancient Roman Forum.'
   },
   {
-    id: 'act-6',
-    cityId: 'city-3',
-    title: 'Fontainhas Latin Quarter Walking & Portuguese Pastry Tour',
-    category: 'Culture',
-    cost: 800,
-    durationHours: 2.5,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1587922546307-776227941871?auto=format&fit=crop&w=600&q=80',
-    description: 'Walk past colorful Portuguese villas and sample traditional Bebinca and Goa fish curry.'
-  },
-
-  // Kochi
-  {
-    id: 'act-7',
-    cityId: 'city-4',
-    title: 'Alleppey Backwater Day Houseboat Cruise with Sadhya Feast',
-    category: 'Relaxation',
-    cost: 2500,
-    durationHours: 5.0,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=600&q=80',
-    description: 'Cruise through palm-fringed palm canals on a luxury Kettuvallam houseboat while eating banana leaf Sadhya.'
-  },
-  {
-    id: 'act-8',
-    cityId: 'city-4',
-    title: 'Fort Kochi Kathakali Dance & Martial Arts Evening',
-    category: 'Culture',
-    cost: 500,
-    durationHours: 2.0,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=600&q=80',
-    description: 'Watch green makeup application and live Kathakali drama performance with Kalaripayattu martial arts.'
+    id: 'act-rome-2',
+    cityId: 'city-rome',
+    cityName: 'Rome',
+    title: 'Trastevere Pasta & Wine Tasting Masterclass',
+    category: 'Food & Culinary',
+    cost: 90,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80',
+    description: 'Learn hand-rolled fresh fettuccine and tiramisu preparation in a historic Trastevere kitchen with Italian wine pairings.'
   },
 
-  // Leh-Ladakh
+  // Tokyo
   {
-    id: 'act-9',
-    cityId: 'city-5',
-    title: 'Pangong Tso Lake Day Tour via Chang La Pass',
-    category: 'Sightseeing',
-    cost: 2800,
-    durationHours: 8.0,
-    rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=600&q=80',
-    description: 'Drive across the world’s third highest motorable pass to the color-shifting turquoise Pangong Lake.'
+    id: 'act-tokyo-1',
+    cityId: 'city-tokyo',
+    cityName: 'Tokyo',
+    title: 'Shibuya Crossing & Tsukiji Food Crawl',
+    category: 'Food & Culinary',
+    cost: 70,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80',
+    description: 'Experience the world’s busiest pedestrian scramble and sample fresh sashimi, tamagoyaki, and matcha at Outer Market.'
   },
   {
-    id: 'act-10',
-    cityId: 'city-5',
-    title: 'Thiksey & Hemis Monastery Morning Chanting Rituals',
-    category: 'Culture',
-    cost: 300,
-    durationHours: 3.0,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=600&q=80',
-    description: 'Join Tibetan monks for early morning butter-tea and rhythmic horn prayer chants in hilltop gompa.'
-  },
-
-  // Udaipur
-  {
-    id: 'act-11',
-    cityId: 'city-6',
-    title: 'Sunset Boat Cruise on Lake Pichola & Jagmandir Island',
-    category: 'Sightseeing',
-    cost: 850,
-    durationHours: 2.0,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1615836245337-f5b9b2303f10?auto=format&fit=crop&w=600&q=80',
-    description: 'Sail across Lake Pichola capturing golden hour light reflecting on City Palace and Lake Palace.'
+    id: 'act-tokyo-2',
+    cityId: 'city-tokyo',
+    cityName: 'Tokyo',
+    title: 'teamLab Planets Digital Art Immersion',
+    category: 'Sightseeing & Heritage',
+    cost: 38,
+    durationHours: 2,
+    image: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=600&q=80',
+    description: 'Walk through water and body-immersive digital artwork rooms created by renowned teamLab collective.'
   },
 
-  // Manali
+  // Sydney
   {
-    id: 'act-12',
-    cityId: 'city-7',
-    title: 'Solang Valley Paragliding & Ropeway Adventure',
-    category: 'Adventure',
-    cost: 2200,
-    durationHours: 4.0,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=600&q=80',
-    description: 'Fly tandem over snow-dusted Himalayan alpine valleys and ride the aerial ropeway.'
-  },
-
-  // Agra
-  {
-    id: 'act-13',
-    cityId: 'city-8',
-    title: 'Taj Mahal Sunrise Guided Heritage Tour',
-    category: 'Sightseeing',
-    cost: 1100,
-    durationHours: 3.0,
-    rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=600&q=80',
-    description: 'Skip the morning crowds to see white marble glow soft pink at dawn with an official historian guide.'
-  },
-
-  // Rishikesh
-  {
-    id: 'act-14',
-    cityId: 'city-9',
-    title: 'Shivpuri 16km Ganges White Water Rafting & Cliff Jump',
-    category: 'Adventure',
-    cost: 1200,
-    durationHours: 3.5,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=600&q=80',
-    description: 'Navigate Roller Coaster and Golf Course rapids down the clear emerald Ganges river.'
-  },
-
-  // Darjeeling
-  {
-    id: 'act-15',
-    cityId: 'city-10',
-    title: 'Tiger Hill Sunrise & Himalayan Toy Train Ride',
-    category: 'Sightseeing',
-    cost: 950,
-    durationHours: 4.0,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=600&q=80',
-    description: 'Watch first sunlight hit Kanchenjunga peak, then ride UNESCO steam locomotive to Ghoom monastery.'
-  },
-
-  // Amritsar
-  {
-    id: 'act-16',
-    cityId: 'city-11',
-    title: 'Golden Temple Night Palki Sahib Ceremony & Langar',
-    category: 'Culture',
-    cost: 0,
-    durationHours: 2.5,
-    rating: 5.0,
-    image: 'https://images.unsplash.com/photo-1588096344356-9a3d463d1f05?auto=format&fit=crop&w=600&q=80',
-    description: 'Experience spiritual peace at illuminated Golden Temple and serve/eat in the world’s largest community kitchen.'
-  },
-  {
-    id: 'act-17',
-    cityId: 'city-11',
-    title: 'Wagah Border Beating Retreat Ceremony Tour',
-    category: 'Sightseeing',
-    cost: 400,
-    durationHours: 3.5,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1588096344356-9a3d463d1f05?auto=format&fit=crop&w=600&q=80',
-    description: 'Witness the patriotic military flag-lowering parade at the India-Pakistan border checkpoint.'
-  },
-
-  // Shillong
-  {
-    id: 'act-18',
-    cityId: 'city-12',
-    title: 'Cherrapunji Double Decker Living Root Bridge Trek',
-    category: 'Adventure',
-    cost: 1500,
-    durationHours: 6.0,
-    rating: 4.9,
-    image: 'https://images.unsplash.com/photo-1627916607164-7b20241db935?auto=format&fit=crop&w=600&q=80',
-    description: 'Hike down 3000 steps through tropical rainforest to bio-engineered ancient rubber tree root bridges.'
+    id: 'act-sydney-1',
+    cityId: 'city-sydney',
+    cityName: 'Sydney',
+    title: 'Sydney Opera House Behind-the-Scenes Tour',
+    category: 'Sightseeing & Heritage',
+    cost: 42,
+    durationHours: 1.5,
+    image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=600&q=80',
+    description: 'Step inside World Heritage sails to discover secret stage foyers and architectural design secrets.'
   },
 
   // Mumbai
   {
-    id: 'act-19',
-    cityId: 'city-13',
-    title: 'Elephanta Caves UNESCO Island Boat Excursion',
-    category: 'Culture',
-    cost: 700,
-    durationHours: 4.5,
-    rating: 4.7,
+    id: 'act-mumbai-1',
+    cityId: 'city-mumbai',
+    cityName: 'Mumbai',
+    title: 'Gateway of India & Marine Drive Heritage Walk',
+    category: 'Sightseeing & Heritage',
+    cost: 20,
+    durationHours: 3,
     image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=600&q=80',
-    description: 'Ferry across Mumbai Harbor to explore 5th century rock-cut Lord Shiva cave sculptures.'
-  },
-  {
-    id: 'act-20',
-    cityId: 'city-13',
-    title: 'Marine Drive Sunset Stroll & Chowpatty Chaat Feast',
-    category: 'Food & Dining',
-    cost: 450,
-    durationHours: 2.5,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=600&q=80',
-    description: 'Walk along the Queen’s Necklace curve and savor Bhelpuri, Sevpuri, and Pav Bhaji at beachside stalls.'
+    description: 'Discover Colonial heritage monuments, Colaba Causeway street markets, and sunset views at Marine Drive.'
   },
 
-  // Ooty
+  // Singapore
   {
-    id: 'act-21',
-    cityId: 'city-14',
-    title: 'Nilgiri Mountain Steam Railway Ride to Coonoor',
-    category: 'Relaxation',
-    cost: 350,
-    durationHours: 2.5,
-    rating: 4.8,
-    image: 'https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?auto=format&fit=crop&w=600&q=80',
-    description: 'Ride vintage blue wooden coaches through 208 bridges and tea-clad Nilgiri hill tunnels.'
+    id: 'act-singapore-1',
+    cityId: 'city-singapore',
+    cityName: 'Singapore',
+    title: 'Gardens by the Bay & Cloud Forest Dome',
+    category: 'Nature & Wildlife',
+    cost: 32,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=600&q=80',
+    description: 'Explore the Flower Dome, misty indoor waterfall at Cloud Forest, and evening Supertree light show.'
   },
 
-  // Kolkata
+  // Barcelona
   {
-    id: 'act-22',
-    cityId: 'city-15',
-    title: 'Heritage Tram Ride & College Street Book Crawl',
-    category: 'Culture',
-    cost: 250,
-    durationHours: 3.0,
-    rating: 4.7,
-    image: 'https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=600&q=80',
-    description: 'Ride Asia’s oldest operating electric tram to College Street and sip kulhad tea at Indian Coffee House.'
+    id: 'act-barcelona-1',
+    cityId: 'city-barcelona',
+    cityName: 'Barcelona',
+    title: 'Sagrada Família Fast-Track Tower Access',
+    category: 'Sightseeing & Heritage',
+    cost: 48,
+    durationHours: 2,
+    image: 'https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=600&q=80',
+    description: 'Admire Antoni Gaudí’s uncompleted basilica, stained glass light reflections, and panoramic spire views.'
+  },
+
+  // Amsterdam
+  {
+    id: 'act-amsterdam-1',
+    cityId: 'city-amsterdam',
+    cityName: 'Amsterdam',
+    title: 'Canal Ring Boat Cruise with Cheese & Wine',
+    category: 'Sightseeing & Heritage',
+    cost: 35,
+    durationHours: 1.5,
+    image: 'https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=600&q=80',
+    description: 'Glide through UNESCO Heritage canal belt, passing historic merchant houses and iconic Skinny Bridge.'
+  },
+
+  // Istanbul
+  {
+    id: 'act-istanbul-1',
+    cityId: 'city-istanbul',
+    cityName: 'Istanbul',
+    title: 'Hagia Sophia & Blue Mosque Guided Walking Tour',
+    category: 'Spiritual & Culture',
+    cost: 30,
+    durationHours: 2.5,
+    image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=600&q=80',
+    description: 'Marvel at Byzantine dome architecture, Iznik blue ceramic tiles, and Sultanahmet historical square.'
+  },
+
+  // Bangkok
+  {
+    id: 'act-bangkok-1',
+    cityId: 'city-bangkok',
+    cityName: 'Bangkok',
+    title: 'Grand Palace & Emerald Buddha Temple Tour',
+    category: 'Spiritual & Culture',
+    cost: 25,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=600&q=80',
+    description: 'Discover golden chedis, intricate Thai mural paintings, and sacred Wat Phra Kaew temple sanctuary.'
+  },
+
+  // Seoul
+  {
+    id: 'act-seoul-1',
+    cityId: 'city-seoul',
+    cityName: 'Seoul',
+    title: 'Gyeongbokgung Palace Hanbok Experience',
+    category: 'Spiritual & Culture',
+    cost: 28,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80',
+    description: 'Dress in traditional Korean Hanbok garments and enjoy free admission to royal palace courtyards.'
+  },
+
+  // San Francisco
+  {
+    id: 'act-sanfrancisco-1',
+    cityId: 'city-sanfrancisco',
+    cityName: 'San Francisco',
+    title: 'Golden Gate Bridge & Sausalito Ferry Ride',
+    category: 'Sightseeing & Heritage',
+    cost: 32,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=600&q=80',
+    description: 'Cycle or walk across the iconic red bridge to Sausalito waterfront village with return bay ferry.'
+  },
+
+  // Lisbon
+  {
+    id: 'act-lisbon-1',
+    cityId: 'city-lisbon',
+    cityName: 'Lisbon',
+    title: 'Historic Tram 28 & Alfama Fado Tour',
+    category: 'Spiritual & Culture',
+    cost: 38,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1509803874385-db7c23652552?auto=format&fit=crop&w=600&q=80',
+    description: 'Ride the iconic vintage yellow tram through narrow Alfama alleyways ending at a Fado music tavern.'
+  },
+
+  // Cape Town
+  {
+    id: 'act-capetown-1',
+    cityId: 'city-capetown',
+    cityName: 'Cape Town',
+    title: 'Table Mountain Cableway & Summit Walk',
+    category: 'Adventure & Water Sports',
+    cost: 25,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=600&q=80',
+    description: 'Ascend the rotating cable car to the flat-topped summit for panoramic views of Atlantic Ocean & Lions Head.'
+  },
+
+  // Lima
+  {
+    id: 'act-lima-1',
+    cityId: 'city-lima',
+    cityName: 'Lima',
+    title: 'Miraflores Ceviche & Pisco Sour Cooking Class',
+    category: 'Food & Culinary',
+    cost: 55,
+    durationHours: 3,
+    image: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=600&q=80',
+    description: 'Learn to prepare authentic Peruvian fresh fish ceviche and shake traditional Pisco Sour cocktails.'
+  },
+
+  // Mexico City
+  {
+    id: 'act-mexicocity-1',
+    cityId: 'city-mexicocity',
+    cityName: 'Mexico City',
+    title: 'Teotihuacan Pyramids & Taco Tasting Tour',
+    category: 'Sightseeing & Heritage',
+    cost: 60,
+    durationHours: 6,
+    image: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542?auto=format&fit=crop&w=600&q=80',
+    description: 'Marvel at the ancient Sun & Moon Pyramids of Teotihuacan followed by artisanal taco & mezcal tasting.'
+  },
+
+  // Bali
+  {
+    id: 'act-bali-1',
+    cityId: 'city-bali',
+    cityName: 'Bali',
+    title: 'Ubud Rice Terraces & Sacred Monkey Forest',
+    category: 'Nature & Wildlife',
+    cost: 35,
+    durationHours: 4,
+    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=600&q=80',
+    description: 'Trek through emerald Tegalalang rice terraces, swing over jungle canopies, and visit Ubud monkey sanctuary.'
   }
 ];

@@ -37,7 +37,6 @@ export const AddEditStopModal = ({
   const [selectedActivityIds, setSelectedActivityIds] = useState([]);
   const [errorMsg, setErrorMsg] = useState('');
 
-  // Initialize form when stopToEdit changes or modal opens
   useEffect(() => {
     if (stopToEdit && isOpen) {
       const cityObj = cities.find((c) => c.id === stopToEdit.cityId || c.name === stopToEdit.cityName);
@@ -54,7 +53,6 @@ export const AddEditStopModal = ({
     }
   }, [stopToEdit, isOpen, cities]);
 
-  // Calculate stay duration
   const calculateDays = () => {
     if (!arrivalDate || !departureDate) return 4;
     const start = new Date(arrivalDate);
@@ -66,28 +64,26 @@ export const AddEditStopModal = ({
 
   const stayDays = calculateDays();
 
-  // Filter cities by search query
   const filteredCities = cities.filter((city) => {
     const q = citySearchQuery.toLowerCase().trim();
     return (
       !q ||
       city.name.toLowerCase().includes(q) ||
+      city.country.toLowerCase().includes(q) ||
       city.region.toLowerCase().includes(q) ||
       city.tags.some((t) => t.toLowerCase().includes(q))
     );
   });
 
-  // City activities
   const cityActivities = selectedCity
-    ? activities.filter((a) => a.cityId === selectedCity.id)
+    ? activities.filter((a) => a.cityId === selectedCity.id || a.cityName === selectedCity.name)
     : [];
 
-  // Subtotal cost calculation for this stop
   const activitiesSubtotal = activities
     .filter((a) => selectedActivityIds.includes(a.id))
     .reduce((sum, a) => sum + (a.cost || 0), 0);
 
-  const dailyRate = selectedCity ? selectedCity.avgDailyCost : 2500;
+  const dailyRate = selectedCity ? selectedCity.avgDailyCost : 200;
   const lodgingSubtotal = dailyRate * stayDays;
   const totalStopSubtotal = activitiesSubtotal + lodgingSubtotal;
 
@@ -147,7 +143,6 @@ export const AddEditStopModal = ({
       maxWidth="max-w-2xl"
     >
       <div className="flex flex-col gap-5">
-        {/* Step Progress Bar */}
         <div>
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-bold text-slate-800">
@@ -172,7 +167,6 @@ export const AddEditStopModal = ({
           </div>
         </div>
 
-        {/* Error Banner */}
         {errorMsg && (
           <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
@@ -184,7 +178,7 @@ export const AddEditStopModal = ({
         {step === 1 && (
           <div className="flex flex-col gap-4">
             <Input
-              placeholder="Search Indian city (e.g. Jaipur, Leh, Kochi)..."
+              placeholder="Search city or country (e.g. Paris, Tokyo, Sydney)..."
               icon={Search}
               value={citySearchQuery}
               onChange={(e) => setCitySearchQuery(e.target.value)}
@@ -215,10 +209,10 @@ export const AddEditStopModal = ({
                     <div className="truncate flex-1">
                       <div className="flex items-center justify-between">
                         <h4 className="text-xs font-bold text-slate-900 truncate">
-                          {city.name}
+                          {city.name}, <span className="font-medium text-slate-400">{city.country}</span>
                         </h4>
                         <span className="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
-                          ₹{city.avgDailyCost}/d
+                          ${city.avgDailyCost}/d
                         </span>
                       </div>
                       <p className="text-[11px] text-slate-400 font-medium truncate mt-0.5">
@@ -244,10 +238,10 @@ export const AddEditStopModal = ({
                 />
                 <div>
                   <h4 className="text-xs font-bold text-slate-900">
-                    Selected Destination: {selectedCity.name}
+                    Selected Destination: {selectedCity.name}, {selectedCity.country}
                   </h4>
                   <p className="text-[11px] text-slate-500">
-                    {selectedCity.region} • Est ₹{selectedCity.avgDailyCost}/day
+                    {selectedCity.region} • Est ${selectedCity.avgDailyCost}/day
                   </p>
                 </div>
               </div>
@@ -292,13 +286,13 @@ export const AddEditStopModal = ({
                   Stop: {selectedCity?.name} ({stayDays} Days)
                 </span>
                 <span className="text-sm font-extrabold text-emerald-400">
-                  Stop Subtotal: ₹{totalStopSubtotal.toLocaleString()}
+                  Stop Subtotal: ${totalStopSubtotal.toLocaleString()}
                 </span>
               </div>
 
               <div className="flex justify-between text-[11px] text-slate-400 pt-1 border-t border-slate-800">
-                <span>Lodging Est ({stayDays}d × ₹{dailyRate}): ₹{lodgingSubtotal.toLocaleString()}</span>
-                <span>Activities ({selectedActivityIds.length}): ₹{activitiesSubtotal.toLocaleString()}</span>
+                <span>Lodging Est ({stayDays}d × ${dailyRate}): ${lodgingSubtotal.toLocaleString()}</span>
+                <span>Activities ({selectedActivityIds.length}): ${activitiesSubtotal.toLocaleString()}</span>
               </div>
             </div>
 

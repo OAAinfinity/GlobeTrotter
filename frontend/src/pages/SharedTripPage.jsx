@@ -55,7 +55,7 @@ export const SharedTripPage = () => {
   const creator = users.find((u) => u.id === trip.userId) || users[0];
 
   // Shareable URL
-  const publicUrl = `https://globetrotter.in/public/trips/${trip.id}`;
+  const publicUrl = `https://globetrotter.io/public/trips/${trip.id}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(publicUrl);
@@ -66,7 +66,7 @@ export const SharedTripPage = () => {
   // Mock Social Share Handlers
   const handleSocialShare = (platform) => {
     let targetUrl = '';
-    const text = encodeURIComponent(`Check out this travel itinerary: "${trip.title}" on GlobeTrotter India!`);
+    const text = encodeURIComponent(`Check out this travel itinerary: "${trip.title}" on GlobeTrotter!`);
 
     if (platform === 'whatsapp') {
       targetUrl = `https://api.whatsapp.com/send?text=${text}%20${encodeURIComponent(publicUrl)}`;

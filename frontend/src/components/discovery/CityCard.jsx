@@ -9,10 +9,10 @@ export const CityCard = ({ city, onOpenAddModal, onClick }) => {
 
   // Cost index level label mapping
   const costLabelMap = {
-    1: { label: 'Budget (₹)', variant: 'emerald' },
-    2: { label: 'Moderate (₹₹)', variant: 'brand' },
-    3: { label: 'Expensive (₹₹₹)', variant: 'amber' },
-    4: { label: 'Luxury (₹₹₹₹)', variant: 'rose' }
+    1: { label: 'Budget ($)', variant: 'emerald' },
+    2: { label: 'Moderate ($$)', variant: 'brand' },
+    3: { label: 'Expensive ($$$)', variant: 'amber' },
+    4: { label: 'Luxury ($$$$)', variant: 'rose' }
   };
 
   const costMeta = costLabelMap[city.costIndex] || costLabelMap[2];
@@ -20,7 +20,7 @@ export const CityCard = ({ city, onOpenAddModal, onClick }) => {
   return (
     <Card
       padding="none"
-      className="overflow-hidden group flex flex-col justify-between h-full border-slate-200/80 cursor-pointer"
+      className="overflow-hidden group flex flex-col justify-between h-full border-slate-200/80 hover:border-brand-300 transition-all duration-300 cursor-pointer"
       onClick={onClick}
     >
       <div>
@@ -36,7 +36,7 @@ export const CityCard = ({ city, onOpenAddModal, onClick }) => {
           {/* Badges Top */}
           <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
             <Badge variant="amber" icon={Star}>
-              {city.popularityScore} Score
+              {city.popularityScore}
             </Badge>
             <Badge variant={costMeta.variant}>
               {costMeta.label}
@@ -54,10 +54,10 @@ export const CityCard = ({ city, onOpenAddModal, onClick }) => {
         <div className="p-5 flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-bold text-slate-900 group-hover:text-brand-600 transition-colors">
-              {city.name}
+              {city.name}, <span className="text-xs font-semibold text-slate-400">{city.country}</span>
             </h3>
             <span className="text-xs font-extrabold text-slate-700 bg-sand-100 px-2 py-0.5 rounded-lg">
-              ₹{city.avgDailyCost}/day
+              ${city.avgDailyCost}/day
             </span>
           </div>
 

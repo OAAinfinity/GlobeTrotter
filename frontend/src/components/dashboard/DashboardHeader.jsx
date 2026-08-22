@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../common/Button';
 import { Badge } from '../common/Badge';
+import { CITY_IMAGE_MAP } from '../../data/cityImageMap';
 import { Plus, Compass, Sparkles, MapPin } from 'lucide-react';
 
 export const DashboardHeader = ({ user, activeTripsCount = 0, onPlanNewTrip }) => {
@@ -15,17 +16,17 @@ export const DashboardHeader = ({ user, activeTripsCount = 0, onPlanNewTrip }) =
             </Badge>
             {user?.travelStyle && (
               <span className="px-3 py-0.5 rounded-full bg-white/10 text-white text-xs font-bold border border-white/20">
-                {user.travelStyle}
+                Archetype: {user.travelStyle}
               </span>
             )}
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-            Namaste, {user?.name || 'Explorer'}! 👋
+            Welcome, {user?.name || 'Explorer'}! 👋
           </h1>
 
           <p className="text-white/90 text-sm sm:text-base leading-relaxed">
-            Ready to craft your next multi-city Indian adventure? You have{' '}
+            Ready to craft your next global travel adventure? You have{' '}
             <span className="font-bold underline decoration-amber-300">
               {activeTripsCount} active {activeTripsCount === 1 ? 'trip' : 'trips'}
             </span>{' '}
@@ -57,8 +58,8 @@ export const DashboardHeader = ({ user, activeTripsCount = 0, onPlanNewTrip }) =
       {/* Decorative background overlay */}
       <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-20 pointer-events-none hidden md:block">
         <img
-          src="https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=600&q=80"
-          alt="Rajasthan Heritage"
+          src={CITY_IMAGE_MAP.Paris}
+          alt="Paris Eiffel Tower"
           className="w-full h-full object-cover"
         />
       </div>

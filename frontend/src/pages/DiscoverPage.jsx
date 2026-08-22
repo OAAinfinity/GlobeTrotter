@@ -3,34 +3,37 @@ import { useApp } from '../context/AppContext';
 import { CityCard } from '../components/discovery/CityCard';
 import { CityDetailModal } from '../components/discovery/CityDetailModal';
 import { AddCityToTripModal } from '../components/discovery/AddCityToTripModal';
+import { HotelRecommendationsWidget } from '../components/dashboard/HotelRecommendationsWidget';
 import { Input } from '../components/common/Input';
 import { Badge } from '../components/common/Badge';
-import { Search, Compass, Sparkles, Filter, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { Search, Compass, Sparkles, Filter, ArrowUpDown, Building } from 'lucide-react';
 
 const REGIONS = [
   'All Regions',
-  'North India',
-  'South India',
-  'West India',
-  'East & North-East',
-  'Himalayan Region'
+  'Europe',
+  'Asia',
+  'North America',
+  'Middle East',
+  'Oceania',
+  'Africa',
+  'South America'
 ];
 
 const COST_LEVELS = [
   { id: 'all', label: 'All Budgets' },
-  { id: '1', label: 'Budget (₹)' },
-  { id: '2', label: 'Moderate (₹₹)' },
-  { id: '3', label: 'Expensive (₹₹₹)' },
-  { id: '4', label: 'Luxury (₹₹₹₹)' }
+  { id: '1', label: 'Budget ($)' },
+  { id: '2', label: 'Moderate ($$)' },
+  { id: '3', label: 'Expensive ($$$)' },
+  { id: '4', label: 'Luxury ($$$$)' }
 ];
 
 export const DiscoverPage = () => {
-  const { cities } = useApp();
+  const { cities, currentUser } = useApp();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('All Regions');
   const [selectedCostIndex, setSelectedCostIndex] = useState('all');
-  const [sortBy, setSortBy] = useState('popularity'); // 'popularity', 'cost-asc', 'cost-desc', 'name'
+  const [sortBy, setSortBy] = useState('popularity');
 
   // Modals state
   const [selectedCityForDetail, setSelectedCityForDetail] = useState(null);
@@ -44,6 +47,7 @@ export const DiscoverPage = () => {
         const matchesSearch =
           !query ||
           city.name.toLowerCase().includes(query) ||
+          city.country.toLowerCase().includes(query) ||
           city.region.toLowerCase().includes(query) ||
           city.tags.some((t) => t.toLowerCase().includes(query));
 
@@ -66,25 +70,25 @@ export const DiscoverPage = () => {
   }, [cities, searchQuery, selectedRegion, selectedCostIndex, sortBy]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-10">
       {/* Header Banner */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-ocean-700 via-ocean-600 to-teal-500 text-white p-6 sm:p-10 shadow-warm-lg">
         <div className="relative z-10 flex flex-col gap-3 max-w-2xl">
           <Badge variant="emerald" icon={Compass} className="bg-white/20 text-white border-white/30">
-            Explore 15+ Indian Travel Hubs
+            Explore 19 Approved Global Hubs
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Discover Indian Destinations
+            Discover Global Destinations
           </h1>
           <p className="text-white/90 text-xs sm:text-sm leading-relaxed">
-            Search top-rated Indian cities, filter by regional vibe or cost budget, and add destinations directly to your multi-city trip itineraries.
+            Search top-rated global cities, filter by continent or budget, and add destinations directly to your multi-city trip itineraries.
           </p>
         </div>
 
         <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-20 pointer-events-none hidden md:block">
           <img
-            src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=600&q=80"
-            alt="Kerala Backwaters"
+            src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80"
+            alt="Paris Eiffel Tower"
             className="w-full h-full object-cover"
           />
         </div>
@@ -96,7 +100,7 @@ export const DiscoverPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
           <div className="md:col-span-8">
             <Input
-              placeholder="Search Indian cities, states, or tags (e.g. Jaipur, Kerala, Forts, Beaches)..."
+              placeholder="Search global cities, countries, or tags (e.g. Paris, Eiffel Tower, Tokyo, Canals)..."
               icon={Search}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -165,12 +169,15 @@ export const DiscoverPage = () => {
         </div>
       </div>
 
+      {/* Dynamic Hotel Recommendations Dataset Section */}
+      <HotelRecommendationsWidget userTravelStyle={currentUser?.travelStyle} />
+
       {/* Grid of City Cards */}
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <Compass className="w-5 h-5 text-brand-500" />
-            Destinations Catalog ({processedCities.length} Cities)
+            Approved Global Cities ({processedCities.length} Cities)
           </h2>
           <span className="text-xs text-slate-400 font-medium">
             Click any card to inspect details or "+ Add to Trip" to schedule
