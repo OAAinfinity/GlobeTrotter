@@ -9,6 +9,9 @@ import { Modal } from '../components/common/Modal';
 import { DayItineraryCard } from '../components/trips/DayItineraryCard';
 import { AddActivityModal } from '../components/trips/AddActivityModal';
 import { BudgetAnalytics } from '../components/trips/BudgetAnalytics';
+import { TransportLegPlanner } from '../components/trips/TransportLegPlanner';
+import { PackingChecklistModal } from '../components/trips/PackingChecklistModal';
+import { ShareTripModal } from '../components/trips/ShareTripModal';
 import {
   Calendar,
   MapPin,
@@ -20,7 +23,9 @@ import {
   Sparkles,
   CheckCircle2,
   Clock,
-  Briefcase
+  Briefcase,
+  Train,
+  CheckSquare
 } from 'lucide-react';
 
 export const TripDetailPage = () => {
@@ -28,10 +33,12 @@ export const TripDetailPage = () => {
   const navigate = useNavigate();
   const { trips, cities, activities, updateTrip, deleteTrip } = useApp();
 
-  const [activeTab, setActiveTab] = useState('itinerary'); // 'itinerary', 'budget', 'cities'
+  const [activeTab, setActiveTab] = useState('itinerary'); // 'itinerary', 'transport', 'budget', 'cities'
   const [selectedDayForModal, setSelectedDayForModal] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isPackingModalOpen, setIsPackingModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const trip = trips.find((t) => t.id === tripId);
 
@@ -90,7 +97,7 @@ export const TripDetailPage = () => {
       daysList.push({
         dayNumber: d,
         cityId: 'city-1',
-        cityName: 'Tokyo',
+        cityName: 'Jaipur',
         legDay: d
       });
     }
@@ -125,6 +132,23 @@ export const TripDetailPage = () => {
     });
   };
 
+  // Update Transport Choice
+  const handleUpdateTransport = (legKey, modeId, fare) => {
+    const updatedChoices = {
+      ...(trip.transportChoices || {}),
+      [legKey]: modeId
+    };
+    const updatedFares = {
+      ...(trip.transportFares || {}),
+      [legKey]: fare
+    };
+
+    updateTrip(trip.id, {
+      transportChoices: updatedChoices,
+      transportFares: updatedFares
+    });
+  };
+
   // Handle Delete Trip
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete "${trip.title}"?`)) {
@@ -154,7 +178,7 @@ export const TripDetailPage = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
       {/* Back Button & Action Toolbar */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <Link
           to="/trips"
           className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded-xl shadow-2xs"
@@ -162,14 +186,30 @@ export const TripDetailPage = () => {
           <ArrowLeft className="w-3.5 h-3.5" /> Back to My Trips
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Button
+            variant="outline"
+            size="sm"
+            icon={CheckSquare}
+            onClick={() => setIsPackingModalOpen(true)}
+          >
+            Packing List
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            icon={Share2}
+            onClick={() => setIsShareModalOpen(true)}
+          >
+            Share
+          </Button>
           <Button
             variant="outline"
             size="sm"
             icon={Printer}
             onClick={() => setIsExportModalOpen(true)}
           >
-            Export Itinerary
+            Export
           </Button>
           <Button
             variant="danger"
@@ -206,7 +246,7 @@ export const TripDetailPage = () => {
           {/* Route Legs Pill Stream */}
           <div className="flex items-center gap-2 flex-wrap pt-1">
             <span className="text-xs text-slate-300 font-semibold flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-brand-400" /> Route:
+              <MapPin className="w-3.5 h-3.5 text-brand-400" /> Multi-City Route:
             </span>
             {(trip.cities || []).map((leg, idx) => (
               <span
@@ -224,6 +264,7 @@ export const TripDetailPage = () => {
       <Tabs
         tabs={[
           { id: 'itinerary', label: 'Day-by-Day Timeline', icon: Calendar },
+          { id: 'transport', label: 'Inter-City Connections', icon: Train },
           { id: 'budget', label: 'Budget Analytics', icon: DollarSign },
           { id: 'cities', label: 'Destinations Breakdown', icon: MapPin }
         ]}
@@ -267,12 +308,21 @@ export const TripDetailPage = () => {
         </div>
       )}
 
-      {/* TAB 2: BUDGET ANALYTICS */}
+      {/* TAB 2: TRANSPORT PLANNER */}
+      {activeTab === 'transport' && (
+        <TransportLegPlanner
+          cityLegs={trip.cities || []}
+          transportChoices={trip.transportChoices || {}}
+          onUpdateChoice={handleUpdateTransport}
+        />
+      )}
+
+      {/* TAB 3: BUDGET ANALYTICS */}
       {activeTab === 'budget' && (
         <BudgetAnalytics trip={trip} cities={cities} activities={activities} />
       )}
 
-      {/* TAB 3: CITIES BREAKDOWN */}
+      {/* TAB 4: CITIES BREAKDOWN */}
       {activeTab === 'cities' && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {(trip.cities || []).map((leg) => {
@@ -315,6 +365,22 @@ export const TripDetailPage = () => {
         onAddActivity={handleAddActivity}
       />
 
+      {/* Smart Packing Checklist Modal */}
+      <PackingChecklistModal
+        isOpen={isPackingModalOpen}
+        onClose={() => setIsPackingModalOpen(false)}
+        cities={trip.cities || []}
+        tripTitle={trip.title}
+      />
+
+      {/* Share Trip Modal */}
+      <ShareTripModal
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+        tripTitle={trip.title}
+        tripId={trip.id}
+      />
+
       {/* Export / Print Modal */}
       <Modal
         isOpen={isExportModalOpen}
@@ -324,13 +390,13 @@ export const TripDetailPage = () => {
       >
         <div className="flex flex-col gap-4">
           <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-xs font-mono whitespace-pre-wrap max-h-60 overflow-y-auto">
-            {`✈️ GLOBETROTTER ITINERARY: ${trip.title.toUpperCase()}\n`}
+            {`✈️ GLOBETROTTER INDIA ITINERARY: ${trip.title.toUpperCase()}\n`}
             {`Dates: ${trip.startDate} to ${trip.endDate} (${totalDays} Days)\n`}
-            {`Budget Target: ₹${trip.totalBudget}\n\n`}
+            {`Budget Target: ₹${(trip.totalBudget || 0).toLocaleString()}\n\n`}
             {`DESTINATION LEGS:\n`}
             {(trip.cities || []).map((l, i) => `${i + 1}. ${l.cityName} — ${l.days} Days\n`).join('')}
             {`\nSCHEDULED EXPERIENCES (${allTripActivities.length}):\n`}
-            {allTripActivities.map((a, i) => `${i + 1}. [Day ${a.dayNumber || 1}] ${a.title} ($${a.cost})\n`).join('')}
+            {allTripActivities.map((a, i) => `${i + 1}. [Day ${a.dayNumber || 1}] ${a.title} (₹${a.cost})\n`).join('')}
           </div>
 
           <div className="flex justify-end gap-2 pt-2">
