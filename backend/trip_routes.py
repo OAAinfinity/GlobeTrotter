@@ -9,12 +9,12 @@ def serialize_trip(db, trip):
     city_legs = db.execute(
         """
         SELECT city_id AS cityId, city_name AS cityName, days
-        FROM trip_city_legs WHERE trip_id = ? ORDER BY position, id
+        FROM trip_city_legs WHERE trip_id = %s ORDER BY position, id
         """,
         (trip["id"],),
     ).fetchall()
     activities = db.execute(
-        "SELECT activity_id FROM trip_activities WHERE trip_id = ? ORDER BY rowid",
+        "SELECT activity_id FROM trip_activities WHERE trip_id = %s ORDER BY activity_id",
         (trip["id"],),
     ).fetchall()
     return {
@@ -56,12 +56,12 @@ def validate_trip(data):
 def save_details(db, trip_id, data):
     for position, city in enumerate(data.get("cities", [])):
         db.execute(
-            "INSERT INTO trip_city_legs(trip_id, city_id, city_name, days, position) VALUES(?, ?, ?, ?, ?)",
+            "INSERT INTO trip_city_legs(trip_id, city_id, city_name, days, position) VALUES(%s, %s, %s, %s, %s)",
             (trip_id, str(city["cityId"]), str(city["cityName"]), max(1, int(city.get("days", 1))), position),
         )
     for activity_id in data.get("selectedActivities", []):
         db.execute(
-            "INSERT OR IGNORE INTO trip_activities(trip_id, activity_id) VALUES(?, ?)",
+            "INSERT INTO trip_activities(trip_id, activity_id) VALUES(%s, %s) ON CONFLICT DO NOTHING",
             (trip_id, str(activity_id)),
         )
 
@@ -69,10 +69,10 @@ def save_details(db, trip_id, data):
 @trip_bp.get("")
 def list_trips(user_id):
     with get_db() as db:
-        if not db.execute("SELECT id FROM users WHERE id = ?", (user_id,)).fetchone():
+        if not db.execute("SELECT id FROM users WHERE id = %s", (user_id,)).fetchone():
             return jsonify(error="User not found"), 404
         trips = db.execute(
-            "SELECT * FROM trips WHERE user_id = ? ORDER BY created_at DESC, id DESC",
+            "SELECT * FROM trips WHERE user_id = %s ORDER BY created_at DESC, id DESC",
             (user_id,),
         ).fetchall()
         return jsonify([serialize_trip(db, trip) for trip in trips])
@@ -85,27 +85,29 @@ def create_trip(user_id):
     if error:
         return jsonify(error=error), 400
     with get_db() as db:
-        if not db.execute("SELECT id FROM users WHERE id = ?", (user_id,)).fetchone():
+        if not db.execute("SELECT id FROM users WHERE id = %s", (user_id,)).fetchone():
             return jsonify(error="User not found"), 404
         cursor = db.execute(
             """
             INSERT INTO trips(user_id, title, description, status, cover_image,
                 start_date, end_date, total_budget, estimated_cost)
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING id
             """,
             (user_id, data["title"].strip(), data.get("description", "").strip(),
              data.get("status", "Upcoming"), data.get("coverImage"), data["startDate"],
              data["endDate"], float(data.get("totalBudget", 0)), float(data.get("estimatedCost", 0))),
         )
-        save_details(db, cursor.lastrowid, data)
-        trip = db.execute("SELECT * FROM trips WHERE id = ?", (cursor.lastrowid,)).fetchone()
+        trip_id = cursor.fetchone()["id"]
+        save_details(db, trip_id, data)
+        trip = db.execute("SELECT * FROM trips WHERE id = %s", (trip_id,)).fetchone()
         return jsonify(serialize_trip(db, trip)), 201
 
 
 @trip_bp.get("/<int:trip_id>")
 def get_trip(user_id, trip_id):
     with get_db() as db:
-        trip = db.execute("SELECT * FROM trips WHERE id = ? AND user_id = ?", (trip_id, user_id)).fetchone()
+        trip = db.execute("SELECT * FROM trips WHERE id = %s AND user_id = %s", (trip_id, user_id)).fetchone()
         if not trip:
             return jsonify(error="Trip not found for this user"), 404
         return jsonify(serialize_trip(db, trip))
@@ -118,30 +120,30 @@ def update_trip(user_id, trip_id):
     if error:
         return jsonify(error=error), 400
     with get_db() as db:
-        trip = db.execute("SELECT id FROM trips WHERE id = ? AND user_id = ?", (trip_id, user_id)).fetchone()
+        trip = db.execute("SELECT id FROM trips WHERE id = %s AND user_id = %s", (trip_id, user_id)).fetchone()
         if not trip:
             return jsonify(error="Trip not found for this user"), 404
         db.execute(
             """
-            UPDATE trips SET title=?, description=?, status=?, cover_image=?, start_date=?,
-                end_date=?, total_budget=?, estimated_cost=?, updated_at=CURRENT_TIMESTAMP
-            WHERE id=? AND user_id=?
+            UPDATE trips SET title=%s, description=%s, status=%s, cover_image=%s, start_date=%s,
+                end_date=%s, total_budget=%s, estimated_cost=%s, updated_at=CURRENT_TIMESTAMP
+            WHERE id=%s AND user_id=%s
             """,
             (data["title"].strip(), data.get("description", "").strip(), data.get("status", "Upcoming"),
              data.get("coverImage"), data["startDate"], data["endDate"], float(data.get("totalBudget", 0)),
              float(data.get("estimatedCost", 0)), trip_id, user_id),
         )
-        db.execute("DELETE FROM trip_city_legs WHERE trip_id = ?", (trip_id,))
-        db.execute("DELETE FROM trip_activities WHERE trip_id = ?", (trip_id,))
+        db.execute("DELETE FROM trip_city_legs WHERE trip_id = %s", (trip_id,))
+        db.execute("DELETE FROM trip_activities WHERE trip_id = %s", (trip_id,))
         save_details(db, trip_id, data)
-        updated = db.execute("SELECT * FROM trips WHERE id = ?", (trip_id,)).fetchone()
+        updated = db.execute("SELECT * FROM trips WHERE id = %s", (trip_id,)).fetchone()
         return jsonify(serialize_trip(db, updated))
 
 
 @trip_bp.delete("/<int:trip_id>")
 def delete_trip(user_id, trip_id):
     with get_db() as db:
-        result = db.execute("DELETE FROM trips WHERE id = ? AND user_id = ?", (trip_id, user_id))
+        result = db.execute("DELETE FROM trips WHERE id = %s AND user_id = %s", (trip_id, user_id))
         if result.rowcount == 0:
             return jsonify(error="Trip not found for this user"), 404
         return jsonify(message="Trip deleted successfully")

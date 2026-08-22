@@ -1,5 +1,4 @@
-import sqlite3
-
+from psycopg.errors import UniqueViolation
 from flask import Blueprint, jsonify, request
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -21,10 +20,10 @@ def signup():
     try:
         with get_db() as db:
             user_id = db.execute(
-                "INSERT INTO users(name, email, password_hash) VALUES(?, ?, ?)",
+                "INSERT INTO users(name, email, password_hash) VALUES(%s, %s, %s) RETURNING id",
                 (name, email, generate_password_hash(password)),
-            ).lastrowid
-    except sqlite3.IntegrityError:
+            ).fetchone()["id"]
+    except UniqueViolation:
         return jsonify(error="An account with this email already exists."), 409
 
     return jsonify(id=user_id, name=name, email=email), 201
@@ -38,7 +37,7 @@ def login():
 
     with get_db() as db:
         user = db.execute(
-            "SELECT id, name, email, password_hash FROM users WHERE email = ?",
+            "SELECT id, name, email, password_hash FROM users WHERE email = %s",
             (email,),
         ).fetchone()
 
