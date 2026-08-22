@@ -119,28 +119,25 @@ export const AuthPage = () => {
   };
 
   // Submit Handler
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setApiError('');
 
     if (!validateForm()) return;
 
     setIsLoading(true);
-
-    setTimeout(() => {
-      try {
-        if (mode === 'login') {
-          login(formData.email, formData.password);
-        } else {
-          signup(formData.name, formData.email, formData.password);
-        }
-        navigate('/dashboard');
-      } catch (err) {
-        setApiError(err.message || 'An error occurred during authentication.');
-      } finally {
-        setIsLoading(false);
+    try {
+      if (mode === 'login') {
+        await login(formData.email, formData.password);
+      } else {
+        await signup(formData.name, formData.email, formData.password);
       }
-    }, 600);
+      navigate('/dashboard');
+    } catch (err) {
+      setApiError(err.message || 'An error occurred during authentication.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Fast Demo Login

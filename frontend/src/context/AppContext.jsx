@@ -7,13 +7,13 @@ import { MOCK_TRIPS } from '../data/mockTrips';
 const AppContext = createContext(null);
 
 export const AppProvider = ({ children }) => {
-  // Initialize current user from localStorage or seed with default Maya Lin
+  // Restore only the authenticated user; new sessions start signed out.
   const [currentUser, setCurrentUser] = useState(() => {
     const saved = localStorage.getItem('globetrotter_user');
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { console.error(e); }
     }
-    return MOCK_USERS[0]; // Default logged-in user for effortless exploration
+    return null;
   });
 
   const [users, setUsers] = useState(() => {
@@ -62,33 +62,31 @@ export const AppProvider = ({ children }) => {
   };
 
   // Auth Methods
-  const login = (email, password) => {
-    const targetUser = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
-    );
-    if (!targetUser) {
-      throw new Error('No account found with this email address.');
-    }
-    if (targetUser.password !== password) {
-      throw new Error('Incorrect password. Please try again.');
-    }
-    setCurrentUser(targetUser);
-    showToast(`Welcome back, ${targetUser.name}! 👋`, 'success');
-    return targetUser;
+  const login = async (email, password) => {
+    const response = await fetch('http://localhost:5000/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Unable to sign in.');
+
+    setCurrentUser(data);
+    showToast(`Welcome back, ${data.name}! 👋`, 'success');
+    return data;
   };
 
-  const signup = (name, email, password) => {
-    const existing = users.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
-    );
-    if (existing) {
-      throw new Error('An account with this email already exists.');
-    }
+  const signup = async (name, email, password) => {
+    const response = await fetch('http://localhost:5000/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Unable to create account.');
+
     const newUser = {
-      id: `user-${Date.now()}`,
-      name,
-      email,
-      password,
+      ...data,
       avatar: `https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80`,
       bio: 'Excited traveler exploring the world with GlobeTrotter!',
       travelStyle: 'Explorer',
@@ -101,7 +99,6 @@ export const AppProvider = ({ children }) => {
       tripsCount: 0
     };
 
-    setUsers((prev) => [...prev, newUser]);
     setCurrentUser(newUser);
     showToast(`Account created successfully! Welcome, ${name} 🎉`, 'success');
     return newUser;
